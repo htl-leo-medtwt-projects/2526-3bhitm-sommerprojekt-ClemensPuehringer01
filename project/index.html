@@ -8,6 +8,22 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <div id="bookBack"></div>
+    <div class="flipbook">
+    <div class="hard">
+        <div id="cover">
+            <div id="header">Das Zauberbuch des Magiers</div>
+            <img src="./media/img/dnd_logo.png" alt="">
+        </div>
+    </div>
+    <div class="hard"></div>
+    <div class="hard"></div>
+    <div class="hard">Tschau Kakao</div>
+  </div>
+
+  <script src="./library/jquery.js"></script>
+  <script src="./library/turn.js"></script>
+  <script>
+    $(".flipbook").turn();
+  </script>
 </body>
 </html>
