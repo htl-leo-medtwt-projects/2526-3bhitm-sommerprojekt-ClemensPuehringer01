@@ -1,0 +1,14 @@
+@font-face {
+    font-family: elenora;
+    src: url(./media/Eleanora.ttf);
+}
+body {
+    font-family: elenora, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #54514C;
+    background: linear-gradient(90deg,rgba(46, 45, 41, 1) 0%, rgba(128, 128, 128, 1) 50%, rgba(46, 45, 41, 1) 100%);
+    overflow: hidden;
+}
