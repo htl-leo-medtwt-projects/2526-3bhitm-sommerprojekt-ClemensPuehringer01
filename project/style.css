@@ -1,3 +1,9 @@
+:root{
+    --background_Gradient: linear-gradient(90deg,rgba(46, 45, 41, 1) 0%, rgba(128, 128, 128, 1) 50%, rgba(46, 45, 41, 1) 100%);
+    --cover_Gradient: linear-gradient(90deg,rgba(104, 91, 64, 1) 0%, rgba(136, 118, 80, 1) 50%, rgba(104, 91, 64, 1) 100%);
+    --page_Gradient: linear-gradient(90deg,rgba(187, 178, 133, 1) 0%, rgba(253, 244, 200, 1) 50%, rgba(187, 178, 133, 1) 100%);
+}
+
 @font-face {
     font-family: elenora;
     src: url(./media/Eleanora.ttf);
@@ -9,7 +15,7 @@ body {
     margin: 0;
     padding: 0;
     background: #54514C;
-    background: linear-gradient(90deg,rgba(46, 45, 41, 1) 0%, rgba(128, 128, 128, 1) 50%, rgba(46, 45, 41, 1) 100%);
+    background: var(--background_Gradient);
     overflow: hidden;
     display: grid;
     place-content: center;
@@ -29,7 +35,8 @@ body {
 }
 
 .flipbook .page {
-    background: white;
+    background: #BBB285;
+    background: var(--page_Gradient);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -41,7 +48,7 @@ body {
 
 #cover{
     background: #685B40;
-    background: linear-gradient(90deg,rgba(104, 91, 64, 1) 0%, rgba(136, 118, 80, 1) 50%, rgba(104, 91, 64, 1) 100%);
+    background: var(--cover_Gradient);
     margin-left: auto;
     margin-right: auto;
     width: 95%;
