@@ -20,6 +20,8 @@
     <!--Frontcover Ende-->
     <div>Seite 1</div>
     <div><div onclick="resetBook()">Reset</div></div>
+    <div><div onclick="addMatzgo()">Matzgo</div></div>
+    <div>Seite 4</div>
 
     <!--Endcover Start-->
     <div class="hard"></div>
@@ -33,6 +35,12 @@
   <script src="./library/turn.js"></script>
   <script>
     $(".flipbook").turn();
+
+    function addMatzgo(){
+    let content1 = `<img src="./media/matt.png" alt="" style="width: 100%;">`;
+    let content2 = `<img src="./media/matt.png" alt="" style="width: 100%;">`;
+    addPages(content1, content2);
+    }
   </script>
 </body>
 </html>
