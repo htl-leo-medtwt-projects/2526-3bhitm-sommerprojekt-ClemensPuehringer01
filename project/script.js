@@ -1,5 +1,6 @@
 let book = document.getElementsByClassName("flipbook")[0];
 
+// Buch Hauptfunktionen Start
 function resetBook() {
     $(book).turn('destroy').html('');
     // Startcover Hinzufügen
@@ -38,4 +39,93 @@ function addPages(content1, content2) {
     $(book).turn('addPage', endCover1, backCoverIndex+1);
     $(book).turn('addPage', endCover2, backCoverIndex+2);
 }
+// Buch Hauptfunktionen Ende
 
+//Startseite
+showStartPage();
+function showStartPage() {
+    resetBook();
+    let content1 = `
+    <div id="loginBtn" onclick="loginPage()">Login</div>
+    <div id="startPage">
+        <div id="searchBar">
+            <h2 id="searchHeader">Was möchtest du lernen?</h2>
+            <div id="searchContainer">
+            <form id="searchform" onsubmit="event.preventDefault();" role="search">
+            <label for="search">Search for stuff</label>
+            <input id="search" type="search" placeholder="Search..." autofocus required />
+            <button id="searchBtn" type="submit">Find</button>    
+            </form>
+            </div>
+        </div>
+        <div id="zauberSchulen">
+            <h2 id="schulenHeader">Zauberschulen</h2>
+            <div id="schulenContainer"> 
+            <div class="zauberSchule" id="Bannmagie" onclick="showBannmagie()">
+            <img src="./media/img/schulen/bannmagie.png" alt="">.................................................................................Bannmagie
+            </div>
+            <div class="zauberSchule" id="Beschwoerung" onclick="showBeschwoerung()">
+            <img src="./media/img/schulen/beschwoerung.png" alt="">............................................................................Beschwörung
+            </div>
+            <div class="zauberSchule" id="Erkentnismagie" onclick="showErkenntnismagie()">
+            <img src="./media/img/schulen/erkenntniss.png" alt="">.........................................................................Erkenntnismagie
+            </div>
+            <div class="zauberSchule" id="Hervorrufung" onclick="showHervorrufung()">
+            <img src="./media/img/schulen/hervorrufung.png" alt="">...........................................................................Hervorrufung
+            </div>
+            <div class="zauberSchule" id="Illusionsmagie" onclick="showIllusionsmagie()">
+            <img src="./media/img/schulen/illusion.png" alt="">.............................................................................Illusionsmagie
+            </div>
+            <div class="zauberSchule" id="Nekromantie" onclick="showNekromantie()">
+            <img src="./media/img/schulen/nekromantie.png" alt="">.............................................................................Nekromantie
+            </div>
+            <div class="zauberSchule" id="Verwandlung" onclick="showVerwandlung()">
+            <img src="./media/img/schulen/verwandlung.png" alt="">.............................................................................Verwandlung
+            </div>
+            <div class="zauberSchule" id="Verzauberung" onclick="showVerzauberung()">
+            <img src="./media/img/schulen/verzauberung.png" alt="">...........................................................................Verzauberung
+            </div>
+            </div>
+        </div>
+        <div id="klassen">
+            <div id="klassenContainer">
+                <div class="klasse" id="Barde" onclick="showBarde()">
+                <img src="./media/img/klassen/barde.jpeg" alt="">
+                Barde
+                </div>
+                <div class="klasse" id="Druide" onclick="showDruide()">
+                <img src="./media/img/klassen/druide.jpeg" alt="">
+                Druide
+                </div>
+                <div class="klasse" id="Hexenmeister" onclick="showHexenmeister()">
+                <img src="./media/img/klassen/hexenmeister.jpeg" alt="">
+                Hexenmeister
+                </div>
+                <div class="klasse" id="Kleriker" onclick="showKleriker()">
+                <img src="./media/img/klassen/kleriker.jpeg" alt="">
+                Kleriker
+                </div>
+                <div class="klasse" id="Magier" onclick="showMagier()">
+                <img src="./media/img/klassen/magier.jpeg" alt="">
+                Magier
+                </div>
+                <div class="klasse" id="Paladin" onclick="showPaladin()">
+                <img src="./media/img/klassen/paladin.jpeg" alt="">
+                Paladin
+                </div>
+                <div class="klasse" id="Waldlaeufer" onclick="showWaldlaeufer()">
+                <img src="./media/img/klassen/waldlaeufer.jpeg" alt="">
+                Waldläufer
+                </div>
+                <div class="klasse" id="Zauberer" onclick="showZauberer()">
+                <img src="./media/img/klassen/zauberer.jpeg" alt="">
+                Zauberer
+                </div>
+            </div>
+        </div>
+    </div>`
+    let content2 = `
+    `
+    addPages('', content1);
+    addPages(content2, '');
+}

@@ -1,13 +1,14 @@
-:root{
-    --background_Gradient: linear-gradient(90deg,rgba(46, 45, 41, 1) 0%, rgba(128, 128, 128, 1) 50%, rgba(46, 45, 41, 1) 100%);
-    --cover_Gradient: linear-gradient(90deg,rgba(104, 91, 64, 1) 0%, rgba(136, 118, 80, 1) 50%, rgba(104, 91, 64, 1) 100%);
-    --page_Gradient: linear-gradient(90deg,rgba(187, 178, 133, 1) 0%, rgba(253, 244, 200, 1) 50%, rgba(187, 178, 133, 1) 100%);
+:root {
+    --background_Gradient: linear-gradient(90deg, rgba(46, 45, 41, 1) 0%, rgba(128, 128, 128, 1) 50%, rgba(46, 45, 41, 1) 100%);
+    --cover_Gradient: linear-gradient(90deg, rgba(104, 91, 64, 1) 0%, rgba(136, 118, 80, 1) 50%, rgba(104, 91, 64, 1) 100%);
+    --page_Gradient: linear-gradient(90deg, rgba(187, 178, 133, 1) 0%, rgba(253, 244, 200, 1) 50%, rgba(187, 178, 133, 1) 100%);
 }
 
 @font-face {
     font-family: elenora;
     src: url(./media/Eleanora.ttf);
 }
+
 body {
     font-family: elenora, sans-serif;
     width: 100vw;
@@ -22,7 +23,7 @@ body {
 }
 
 /*Buch Style - !NICHT VERÄNDERN!*/
-.flipbook{
+.flipbook {
     width: 70vw;
     height: 90vh;
 }
@@ -31,22 +32,23 @@ body {
     background: #40351D !important;
     color: #fff;
     font-weight: bold;
-    border: none; 
+    border: none;
 }
 
 .flipbook .page {
     background: #BBB285;
     background: var(--page_Gradient);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
     border: 1px solid rgba(0, 0, 0, 0.11);
 }
+
 /*Ende Buch Style*/
 
-#cover{
+#cover {
     background: #685B40;
     background: var(--cover_Gradient);
     margin-left: auto;
@@ -57,7 +59,8 @@ body {
     display: grid;
     grid-template-columns: auto;
 }
-#header{
+
+#header {
     font-size: 3em;
     color: black;
     background-color: #FDF4C8;
@@ -74,8 +77,188 @@ body {
     margin-right: auto;
     margin-top: 1%;
 }
-#cover > img{
+
+#cover>img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+/*-------------Startseite Start--------------*/
+#startPage{
+    display: grid;
+    grid-template-columns: auto;
+    gap: 20px;
+}
+#loginBtn{
+    position: absolute;
+    width: 10%;
+    top: 5%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    background: #D9D9D9;
+    border: solid 2px black;
+    text-align: center;
+    padding: 0.5%;
+    border-radius: 10px;
+    scale: 1.3;
+}
+
+/*Suchleiste Style - Grundidee von: https://codepen.io/liamj/pen/vYYLGZj*/
+
+#searchBar{
+    position: relative;
+    top: 10%;
+    display: grid;
+    grid-template-columns: auto;
+    margin-bottom: 2%;
+}
+#searchContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#searchHeader{
+    font-size: 2em;
+    color: black;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#searchform {
+    position: relative;
+    width: 25rem;
+    background: #BE2B2B;
+    border-radius: .7rem;
+}
+
+#search,
+#searchBtn {
+    height: 2rem;
+    font-family: elenora;
+    border: 0;
+    color: #2f2f2f;
+    font-size: 1.8rem;
+}
+
+input[type="search"] {
+    outline: 0;
+    width: 100%;
+    background: #D9D9D9;
+    border: solid 2px black;
+    padding: 0 1.6rem;
+    border-radius: .7rem;
+    appearance: none;
+    transition: all .3s cubic-bezier(0, 0, 0.43, 1.49);
+    transition-property: width, border-radius;
+    z-index: 1;
+    position: relative;
+}
+
+#searchBtn {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6rem;
+    font-weight: bold;
+    background: #BE2B2B;
+    border-radius: 0 .7rem .7rem 0;
+    cursor: pointer;
+}
+
+#search:not(:placeholder-shown) {
+    border-radius: .7rem 0 0 .7rem;
+    width: calc(100% - 6rem);
+
+    +button {
+        display: block;
+    }
+}
+
+label {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+/*Ende Suchleiste Style*/
+
+/*Start Zauberschulen Style*/
+#schulenHeader{
+    font-size: 2em;
+    color: black;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#zauberSchulen{
+    position: relative;
+    top: -10%;
+    display: grid;
+    grid-template-columns: auto;
+}
+.zauberSchule{
+    font-size: 1.5em;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.zauberSchule>img{
+    width: 5%;
+}
+/*Ende Zauberschulen Style*/
+
+/*Start Klassen Style*/
+#klassen{
+    position: relative;
+    top: -15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 10px;
+}
+#klassenContainer{
+    width: 90%;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    background: var(--cover_Gradient);
+    padding: 1%;
+    border-radius: 20px
+}
+.klasse{
+    font-size: 1.5em;
+    text-align: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.klasse>img{
+    width: 2em;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+/*-------------Startseite Ende--------------*/
