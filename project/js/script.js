@@ -1,5 +1,8 @@
 let book = document.getElementsByClassName("flipbook")[0];
 
+
+//------------------Buch Funktionen------------------//
+//---------------------------------------------------//
 // Buch Hauptfunktionen Start
 function resetBook() {
     $(book).turn('destroy').html('');
@@ -8,7 +11,7 @@ function resetBook() {
     <div class="hard"><div id="cover"><div id="header">Das Zauberbuch des Magiers</div><img src="./media/img/dnd_logo.png" alt=""></div></div>
     <div class="hard"></div>
     <div class="hard"></div>
-    <div class="hard"><img src="./media/matt.png" alt="" style="width: 100%;"></div>
+    <div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>
     `
     book.innerHTML = covers;
         // turn.js initialisieren
@@ -33,7 +36,7 @@ function addPages(content1, content2) {
     $(book).turn('addPage', `<div>${content2}</div>`, backCoverIndex);
 
     let endCover1 = '<div class="hard"></div>'
-    let endCover2 = '<div class="hard"><img src="./media/matt.png" alt="" style="width: 100%;"></div>'
+    let endCover2 = '<div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>'
 
     // Endcover wieder hinzufügen, damit sie am Ende bleiben.
     $(book).turn('addPage', endCover1, backCoverIndex+1);
@@ -41,6 +44,9 @@ function addPages(content1, content2) {
 }
 // Buch Hauptfunktionen Ende
 
+
+//------------------Startseite------------------//
+//----------------------------------------------//
 //Startseite
 showStartPage();
 function showStartPage() {
@@ -128,4 +134,9 @@ function showStartPage() {
     `
     addPages('', content1);
     addPages(content2, '');
+}
+
+//------------------Login Seite------------------//
+function loginPage() {
+    
 }
