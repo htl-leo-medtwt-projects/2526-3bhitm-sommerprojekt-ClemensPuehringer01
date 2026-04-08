@@ -1,14 +1,14 @@
-export async function getAllSpells() {
+async function getAllSpells() {
     const response = await fetch("/api/getSpells.php");
     return await response.json();
 }
 
-export async function getSpellById(id) {
+async function getSpellById(id) {
     const response = await fetch(`/api/getSpellById.php?id=${id}`);
     return await response.json();
 }
 
-export async function addSpell(spell) {
+async function addSpell(spell) {
     const response = await fetch("/api/addSpell.php", {
         method: "POST",
         headers: {

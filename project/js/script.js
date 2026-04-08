@@ -1,5 +1,5 @@
 let book = document.getElementsByClassName("flipbook")[0];
-
+let wrapper = document.getElementById("outerWrapper");
 
 //------------------Buch Funktionen------------------//
 //---------------------------------------------------//
@@ -138,5 +138,18 @@ function showStartPage() {
 
 //------------------Login Seite------------------//
 function loginPage() {
-    
+    let loginOverlay =`
+    <div id="loginOverlay">
+        <div id="loginForm">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button id="submitLogin" onclick="submitLogin()">Submit</button>
+            <button id="closeLogin" onclick="closeLogin()">Close</button>
+            <h2>Don't have an account?</h2>
+            <button id="goToRegister" onclick="registerPage()">Register</button>
+        </div>
+    </div>
+    `
+    wrapper.insertAdjacentHTML('beforeend', loginOverlay);
 }
