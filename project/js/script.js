@@ -144,12 +144,47 @@ function loginPage() {
             <h2>Login</h2>
             <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Password">
-            <button id="submitLogin" onclick="submitLogin()">Submit</button>
-            <button id="closeLogin" onclick="closeLogin()">Close</button>
-            <h2>Don't have an account?</h2>
-            <button id="goToRegister" onclick="registerPage()">Register</button>
+            <button id="submitLogin" onclick="submitLogin()">Login</button>
+            <button id="closeLogin" onclick="closeLogin()">Schließen</button>
+            <h2>Noch kein Account?</h2>
+            <button id="goToRegister" onclick="registerPage()">Registrieren</button>
         </div>
     </div>
     `
     wrapper.insertAdjacentHTML('beforeend', loginOverlay);
+}
+
+function registerPage() {
+    closeLogin();
+    let registerOverlay =`
+    <div id="registerOverlay">
+        <div id="registerForm">
+            <h2>Registrieren</h2>
+            <input type="text" id="regUsername" placeholder="Username">
+            <input type="password" id="regPassword" placeholder="Passwort">
+            <input type="password" id="regPasswordAgain" placeholder="Passwort wiederholen">
+            <button id="submitRegister" onclick="submitRegister()">Registrieren</button>
+            <button id="closeRegister" onclick="closeRegister()">Schließen</button>
+        </div>
+    </div>
+    `
+    wrapper.insertAdjacentHTML('beforeend', registerOverlay);
+}
+
+function closeLogin() {
+    let loginOverlay = document.getElementById("loginOverlay");
+    if (loginOverlay) {
+        loginOverlay.remove();
+    }
+}
+
+function closeRegister() {
+    let registerOverlay = document.getElementById("registerOverlay");
+    if (registerOverlay) {
+        registerOverlay.remove();
+    }
+}
+
+function submitlogin(){
+
 }
