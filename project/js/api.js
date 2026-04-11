@@ -1,15 +1,15 @@
 async function getAllSpells() {
-    const response = await fetch("/api/getSpells.php");
+    const response = await fetch("./api/getSpells.php");
     return await response.json();
 }
 
 async function getSpellById(id) {
-    const response = await fetch(`/api/getSpellById.php?id=${id}`);
+    const response = await fetch(`./api/getSpellById.php?id=${id}`);
     return await response.json();
 }
 
-export async function addSpell(spell) {
-    const response = await fetch("/api/addSpell.php", {
+async function addSpell(spell) {
+    const response = await fetch("./api/addSpell.php", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -22,7 +22,7 @@ export async function addSpell(spell) {
 }
 
 async function register(username, password) {
-    const response = await fetch("/api/register.php", {
+    const response = await fetch("./api/register.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -37,7 +37,7 @@ async function register(username, password) {
 }
 
 async function login(username, password) {
-    const response = await fetch("/api/login.php", {
+    const response = await fetch("./api/login.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -46,6 +46,15 @@ async function login(username, password) {
             username,
             password
         })
+    });
+
+    return await response.json();
+}
+
+async function logout() {
+    const response = await fetch("./api/logout.php", {
+        method: "POST",
+        credentials: "include"
     });
 
     return await response.json();
