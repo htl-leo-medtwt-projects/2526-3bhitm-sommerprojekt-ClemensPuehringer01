@@ -59,3 +59,19 @@ async function logout() {
 
     return await response.json();
 }
+async function getSpellsBySchool(id) {
+    const response = await fetch(`./api/getSpellsBySchool.php?id=${id}`, {
+        credentials: "include"
+    });
+
+    return await response.json().then(data => {
+        return data;
+    })
+}
+async function getSpellsByClass(id) {
+    const response = await fetch(`./api/getSpellsByClass.php?id=${id}`, {
+        credentials: "include"
+    });
+
+    return await response.json();
+}

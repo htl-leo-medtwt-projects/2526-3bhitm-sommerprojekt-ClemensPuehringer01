@@ -7,6 +7,62 @@ let userInfo ={
     username: null,
     loggedIn: false
 }
+
+let currentSpell = null;
+let spellList = [];
+let spellsPerPage = 3;
+
+function loadSpellLevelTable(){
+    return `
+    <div class="spellLevel">
+    <h2 id="gradHeader">Zaubergräder</h2>
+            <div id="gradContainer"> 
+            <div class="zauberGrad" onclick="goToGrad(0)">
+            .................................................................................Zaubertrick
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(1)">
+            ......................................................................................Grad 1
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(2)">
+            ......................................................................................Grad 2
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(3)">
+            ......................................................................................Grad 3
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(4)">
+            ......................................................................................Grad 4
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(5)">
+            ......................................................................................Grad 5
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(6)">
+            ......................................................................................Grad 6
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(7)">
+            ......................................................................................Grad 7
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(8)">
+            ......................................................................................Grad 8
+            </div>
+            <div class="zauberGrad" onclick="goToGrad(9)">
+            ......................................................................................Grad 9
+            </div>
+        </div>
+    </div>
+    `
+}
+
+function sortSpellListByLevel() {
+    // Zauber wird nach stufe sortiert, wenn selbe stufe, dann alphabetisch
+    spellList.sort((a, b) => {
+        if (a.level === b.level) {
+            return b.zauberName.localeCompare(a.zauberName);
+        }
+        return a.level - b.level;
+    });
+}
+
+
 //------------------Buch Funktionen------------------//
 //---------------------------------------------------//
 // Buch Hauptfunktionen Start
@@ -47,6 +103,10 @@ function addPages(content1, content2) {
     // Endcover wieder hinzufügen, damit sie am Ende bleiben.
     $(book).turn('addPage', endCover1, backCoverIndex+1);
     $(book).turn('addPage', endCover2, backCoverIndex+2);
+}
+
+function goToPage(pageNumber) {
+    $(book).turn('page', pageNumber);
 }
 // Buch Hauptfunktionen Ende
 
@@ -137,6 +197,32 @@ function showStartPage() {
         </div>
     </div>`
     let content2 = `
+    <div id="vorWort">
+        <div id="vorWortHeader">Vorwort</div>
+        <div id="vorWortGrid">
+    <p class="vorWortText">
+        Sehr geehrte*r Magiekundige*r,  
+        nun da dieses Buch in deinen Besitz übergegangen ist – ein Werk, das bereits zahlreiche Zauberwirkende durch die Vergessenen Reiche und weit darüber hinaus begleitet hat – ist es mir ein Anliegen, dir seine Nutzung näherzubringen.
+    </p>
+
+    <p class="vorWortText">
+        Dieses Werk ist mehr als nur ein gewöhnliches Buch. Es ist ein Zauberbuch, gefüllt mit mächtigen und vielseitigen Zaubern, die darauf warten, von dir entdeckt und gemeistert zu werden. Darüber hinaus findest du hier Wissen über die verschiedenen Zauberschulen sowie die Klassen, die sich der arkanen Kunst bedienen.
+    </p>
+
+    <p class="vorWortText">
+        Du kannst die enthaltenen Zauber nach Schulen oder Klassen ordnen, oder mithilfe der Suchfunktion gezielt nach bestimmten Formeln suchen. Hast du einen Zauber gefunden, der dein Interesse weckt, genügt ein Klick, um weitere Details über seine Wirkung und Anwendung zu erfahren.
+    </p>
+
+    <p class="vorWortText">
+        Möge dieses Buch dir auf deinem Weg ein treuer Begleiter sein. Möge dein Verständnis der Magie wachsen und dein Können dich durch viele Abenteuer führen.
+    </p>
+
+    <p class="vorWortText">
+        Mit magischen Grüßen,<br>
+        Der Erschaffer dieses Buches
+    </p>
+</div>
+    </div>
     `
     addPages('', content1);
     addPages(content2, '');
@@ -201,6 +287,7 @@ async function submitLogin() {
     }
 
     let result = await login(username, password);
+    console.log(result);
 
     if (result.success) {
         userInfo.username = username;
@@ -273,4 +360,43 @@ async function submitLogout() {
         console.error("Logout Fehler:", error);
         alert("Serverfehler beim Logout.");
     }
+}
+
+//------------------Klassenfunktionen------------------//
+async function showBarde() {
+    let awnser = await getSpellsByClass(1);
+    spellList = awnser.data;
+    resetBook();
+    let start1 = `
+    <div id="classHeader">
+        <h1>Barde</h1>
+        <img src="./media/img/klassen/barde.jpeg" alt="">
+        <div id="classDescription">
+    </div>
+    `
+    let start2 = loadSpellLevelTable();
+    addPages('', start1);
+    addPages(start2, '');
+    sortSpellListByLevel();
+
+    // Zauber in kleinen Spellcards anziegen, 3 pro seite
+    for (let i = 0; i < spellList.length; i += spellsPerPage) {
+        let pageContent1 = `<div class="spellCardContainer">`;
+        let pageContent2 = `<div class="spellCardContainer">`;
+        for (let j = i; j < i + spellsPerPage && j < spellList.length; j++) {
+            let spell = spellList[j];
+            pageContent1 += `
+            <div class="spellCard" onclick="showSpellDetails(${spell.zauberId})">
+                <h3>${spell.zauberName}</h3>
+                <p>Grad: ${spell.stufe}</p>
+                <p>Schule: ${spell.schulenName}</p>
+            </div>
+            `;
+        }
+        pageContent1 += `</div>`;
+        pageContent2 += `</div>`;
+        addPages(pageContent1, pageContent2);
+    }
+    goToPage(4);
+
 }

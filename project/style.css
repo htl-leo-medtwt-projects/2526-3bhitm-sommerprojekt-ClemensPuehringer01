@@ -284,6 +284,40 @@ label {
     border-radius: 10px;
     transition: 0.3s;
 }
+
+#vorWort{
+    position: relative;
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 1%;
+}
+#vorWortGrid{
+    display: grid;
+    grid-template-columns: auto;
+}
+.vorWortText{
+    font-size: 1.3em;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 2%;
+}
+#vorWortHeader{
+    font-size: 3em;
+    color: black;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
 /*-------------Startseite Ende--------------*/
 
 /*-------------Loginpage Start--------------*/
