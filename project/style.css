@@ -445,3 +445,55 @@ label {
     margin-right: auto;
 }
 /*-------------Loginpage Ende--------------*/
+
+/*-------------Zauberliste-----------------*/
+.spellCardContainer{
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 25% 25% 25% 25%;
+    gap: 10px;
+}
+.spellCard{
+    display: grid;
+    grid-template-columns: 20% 50% 30%;
+    width: 90%;
+    border: solid 4px rgba(119, 83, 32, 0.973);
+    border-radius: 10px;
+    padding: 1%;
+    min-height: 15vh;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.spellCard:hover{
+    scale: 1.02;
+    border: solid 4px #BE2B2B;
+}
+.spellCardImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.spellCardImage{
+    width: 100%;
+}
+.emptyCard{
+    min-height: 15vh;
+}
+.spellCardLables{
+    display: grid;
+    grid-template-columns: auto;
+    grid-gap: 5%;
+}
+.spellLable{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FDF4C8;
+    width: 70%;
+    background-color: #685B40;
+    border-radius: 30px;
+    text-align: center;
+    max-height: 40%;
+    margin-top: auto;
+    margin-bottom: auto;
+}

@@ -10,7 +10,7 @@ let userInfo ={
 
 let currentSpell = null;
 let spellList = [];
-let spellsPerPage = 3;
+let spellsPerPage = 4;
 
 function loadSpellLevelTable(){
     return `
@@ -104,9 +104,40 @@ function addPages(content1, content2) {
     $(book).turn('addPage', endCover1, backCoverIndex+1);
     $(book).turn('addPage', endCover2, backCoverIndex+2);
 }
+function addSinglePage(content){
+    let totalPages = $(book).turn('pages') || $(book).children().length;
+    if (!totalPages || totalPages < 1) {
+        // noch kein Endcover / zu wenig Seiten -> normal hinzufügen
+        $(book).turn('addPage', `<div>${content}</div>`);
+        return;
+    }
+
+    // Endcover beibehalten und später wieder anfügen:
+    let backCoverIndex = totalPages;
+    let priorCoverIndex = totalPages - 1;
+
+    // Vor dem Endcover einfügen, indem wir die aktuelle Endcover-Position verwenden.
+    // Dies sollte in turn.js automatisch die Seite an die richtige Stelle schieben.
+    $(book).turn('addPage', `<div>${content}</div>`, priorCoverIndex);
+
+    let endCover1 = '<div class="hard"></div>'
+    let endCover2 = '<div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>'
+
+    // Endcover wieder hinzufügen, damit sie am Ende bleiben.
+    $(book).turn('addPage', endCover1, backCoverIndex);
+    $(book).turn('addPage', endCover2, backCoverIndex+1);
+}
 
 function goToPage(pageNumber) {
     $(book).turn('page', pageNumber);
+}
+
+function fillPages(){
+    //Fügt so viele seiten hinzu das, dass buch am ende eine Gerade Seitenanzahl hat, damit die Endcover immer auf der richtigen Seite sind
+    let totalPages = $(book).turn('pages') || $(book).children().length;
+    if(totalPages % 2 !== 0){
+        addSinglePage('');
+    }
 }
 // Buch Hauptfunktionen Ende
 
@@ -292,7 +323,7 @@ async function submitLogin() {
     if (result.success) {
         userInfo.username = username;
         userInfo.loggedIn = true;
-        userInfo.userID = result.userID;
+        userInfo.userID = result.userId;
         document.getElementById("loginBtn").innerHTML = "Logut";
         document.getElementById("loginBtn").onclick = submitLogout;
         closeLogin();
@@ -376,27 +407,95 @@ async function showBarde() {
     `
     let start2 = loadSpellLevelTable();
     addPages('', start1);
-    addPages(start2, '');
-    sortSpellListByLevel();
+    addSinglePage(start2);
 
-    // Zauber in kleinen Spellcards anziegen, 3 pro seite
-    for (let i = 0; i < spellList.length; i += spellsPerPage) {
+    drawSpellCards();
+
+    fillPages();
+    goToPage(4);
+}
+
+function drawSpellCards(){
+        sortSpellListByLevel();
+
+    for (let i = 0; i < spellList.length; i += 2*spellsPerPage) {
         let pageContent1 = `<div class="spellCardContainer">`;
         let pageContent2 = `<div class="spellCardContainer">`;
         for (let j = i; j < i + spellsPerPage && j < spellList.length; j++) {
             let spell = spellList[j];
-            pageContent1 += `
-            <div class="spellCard" onclick="showSpellDetails(${spell.zauberId})">
-                <h3>${spell.zauberName}</h3>
-                <p>Grad: ${spell.stufe}</p>
-                <p>Schule: ${spell.schulenName}</p>
-            </div>
-            `;
+            pageContent1 += writeSpellCard(spell);
+        }
+        //Falls keine 4 Zauber hinzu gefügt wurden, werden leere Karten hinzugefügt, damit die Seite immer voll ist
+        for(let k = 0; k < spellsPerPage - (Math.min(spellsPerPage, spellList.length - i)); k++){
+            pageContent1 += `<div class="emptyCard"></div>`;
         }
         pageContent1 += `</div>`;
+        for (let j = i + spellsPerPage; j < i + 2*spellsPerPage && j < spellList.length; j++) {
+            let spell = spellList[j];
+            pageContent2 += writeSpellCard(spell);
+        }
         pageContent2 += `</div>`;
         addPages(pageContent1, pageContent2);
     }
-    goToPage(4);
+}
 
+function writeSpellCard(spell){
+    let verified = false;
+    if(spell.userId==1){
+        verified = true;
+    }
+    let selfMade= false;
+    if((spell.userId==userInfo.userID) && userInfo.loggedIn){
+        selfMade = true;
+    }
+    let zauberGrad;
+    if (spell.stufe === 0){
+        zauberGrad = "Zaubertrick";
+    }else{
+        zauberGrad = `Grad ${spell.stufe}`;
+    }
+    let schulenBild
+    switch (spell.schulenName) {
+        case "Bannmagie":
+            schulenBild = "bannmagie.png";
+            break;
+        case "Beschwörung":
+            schulenBild = "beschwoerung.png";
+            break;
+        case "Erkenntnismagie":
+            schulenBild = "erkenntniss.png";
+            break;
+        case "Hervorrufung":
+            schulenBild = "hervorrufung.png";
+            break;
+        case "Illusionsmagie":
+            schulenBild = "illusion.png";
+            break;
+        case "Nekromantie":
+            schulenBild = "nekromantie.png";
+            break;
+        case "Verwandlung":
+            schulenBild = "verwandlung.png";
+            break;
+        case "Verzauberung":
+            schulenBild = "verzauberung.png";
+            break;
+    }
+    let spellCard = `
+    <div class="spellCard" onclick="showSpellDetails(${spell.zauberId})">
+        <div class="spellCardImg">
+        <img class="spellCardImage" src="./media/img/schulen/${schulenBild}" alt="">
+        </div>
+        <div class="spellCardText">
+                <h3>${spell.zauberName}</h3>
+                <p>${zauberGrad}</p>
+                <p>Schule der ${spell.schulenName}</p>
+        </div>
+        <div class="spellCardLables">
+        ${verified ? '<span class="spellLable">Verifiziert</span>' : ''}
+        ${selfMade ? '<span class="spellLable">Eigenkreation</span>' : ''}  
+        </div>
+        </div>
+        `
+    return spellCard;
 }
