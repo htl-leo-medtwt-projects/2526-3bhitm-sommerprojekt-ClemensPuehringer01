@@ -8,6 +8,17 @@ let userInfo ={
     loggedIn: false
 }
 
+const classData = {
+    1: { name: "Barde",        image: "barde"        },
+    2: { name: "Druide",       image: "druide"       },
+    3: { name: "Hexenmeister", image: "hexenmeister" },
+    4: { name: "Kleriker",     image: "kleriker"     },
+    5: { name: "Magier",       image: "magier"       },
+    6: { name: "Paladin",      image: "paladin"      },
+    7: { name: "Waldläufer",   image: "waldlaeufer"  },
+    8: { name: "Zauberer",     image: "zauberer"     },
+};
+
 let currentSpell = null;
 let spellList = [];
 let spellsPerPage = 4;
@@ -53,12 +64,11 @@ function loadSpellLevelTable(){
 }
 
 function sortSpellListByLevel() {
-    // Zauber wird nach stufe sortiert, wenn selbe stufe, dann alphabetisch
     spellList.sort((a, b) => {
-        if (a.level === b.level) {
-            return b.zauberName.localeCompare(a.zauberName);
+        if (a.stufe === b.stufe) {
+            return a.zauberName.localeCompare(b.zauberName); // a vor b = aufsteigend
         }
-        return a.level - b.level;
+        return a.stufe - b.stufe; // a vor b = aufsteigend
     });
 }
 
@@ -139,6 +149,9 @@ function fillPages(){
         addSinglePage('');
     }
 }
+function goToGrad(stufe){
+    //Berechnen wie 
+}
 // Buch Hauptfunktionen Ende
 
 
@@ -192,35 +205,35 @@ function showStartPage() {
         </div>
         <div id="klassen">
             <div id="klassenContainer">
-                <div class="klasse" id="Barde" onclick="showBarde()">
+                <div class="klasse" id="Barde" onclick="showClassDynamic(1)">
                 <img src="./media/img/klassen/barde.jpeg" alt="">
                 Barde
                 </div>
-                <div class="klasse" id="Druide" onclick="showDruide()">
+                <div class="klasse" id="Druide" onclick="showClassDynamic(2)">
                 <img src="./media/img/klassen/druide.jpeg" alt="">
                 Druide
                 </div>
-                <div class="klasse" id="Hexenmeister" onclick="showHexenmeister()">
+                <div class="klasse" id="Hexenmeister" onclick="showClassDynamic(3)">
                 <img src="./media/img/klassen/hexenmeister.jpeg" alt="">
                 Hexenmeister
                 </div>
-                <div class="klasse" id="Kleriker" onclick="showKleriker()">
+                <div class="klasse" id="Kleriker" onclick="showClassDynamic(4)">
                 <img src="./media/img/klassen/kleriker.jpeg" alt="">
                 Kleriker
                 </div>
-                <div class="klasse" id="Magier" onclick="showMagier()">
+                <div class="klasse" id="Magier" onclick="showClassDynamic(5)">
                 <img src="./media/img/klassen/magier.jpeg" alt="">
                 Magier
                 </div>
-                <div class="klasse" id="Paladin" onclick="showPaladin()">
+                <div class="klasse" id="Paladin" onclick="showClassDynamic(6)">
                 <img src="./media/img/klassen/paladin.jpeg" alt="">
                 Paladin
                 </div>
-                <div class="klasse" id="Waldlaeufer" onclick="showWaldlaeufer()">
+                <div class="klasse" id="Waldlaeufer" onclick="showClassDynamic(7)">
                 <img src="./media/img/klassen/waldlaeufer.jpeg" alt="">
                 Waldläufer
                 </div>
-                <div class="klasse" id="Zauberer" onclick="showZauberer()">
+                <div class="klasse" id="Zauberer" onclick="showClassDynamic(8)">
                 <img src="./media/img/klassen/zauberer.jpeg" alt="">
                 Zauberer
                 </div>
@@ -394,23 +407,25 @@ async function submitLogout() {
 }
 
 //------------------Klassenfunktionen------------------//
-async function showBarde() {
-    let awnser = await getSpellsByClass(1);
-    spellList = awnser.data;
+async function showClassDynamic(classId) {
+    const { name, image } = classData[classId];
+    
+    let answer = await getSpellsByClass(classId);
+    spellList = answer.data;
     resetBook();
+
     let start1 = `
-    <div id="classHeader">
-        <h1>Barde</h1>
-        <img src="./media/img/klassen/barde.jpeg" alt="">
-        <div id="classDescription">
-    </div>
-    `
+        <div id="classHeader">
+            <h1>${name}</h1>
+            <img src="./media/img/klassen/${image}.jpeg" alt="">
+            <div id="classDescription"></div>
+        </div>
+    `;
     let start2 = loadSpellLevelTable();
     addPages('', start1);
     addSinglePage(start2);
 
     drawSpellCards();
-
     fillPages();
     goToPage(4);
 }
@@ -423,7 +438,7 @@ function drawSpellCards(){
         let pageContent2 = `<div class="spellCardContainer">`;
         for (let j = i; j < i + spellsPerPage && j < spellList.length; j++) {
             let spell = spellList[j];
-            pageContent1 += writeSpellCard(spell);
+            pageContent1 += writeSpellCard(spell, j);
         }
         //Falls keine 4 Zauber hinzu gefügt wurden, werden leere Karten hinzugefügt, damit die Seite immer voll ist
         for(let k = 0; k < spellsPerPage - (Math.min(spellsPerPage, spellList.length - i)); k++){
@@ -432,14 +447,14 @@ function drawSpellCards(){
         pageContent1 += `</div>`;
         for (let j = i + spellsPerPage; j < i + 2*spellsPerPage && j < spellList.length; j++) {
             let spell = spellList[j];
-            pageContent2 += writeSpellCard(spell);
+            pageContent2 += writeSpellCard(spell, j);
         }
         pageContent2 += `</div>`;
         addPages(pageContent1, pageContent2);
     }
 }
 
-function writeSpellCard(spell){
+function writeSpellCard(spell, index){
     let verified = false;
     if(spell.userId==1){
         verified = true;
@@ -482,7 +497,7 @@ function writeSpellCard(spell){
             break;
     }
     let spellCard = `
-    <div class="spellCard" onclick="showSpellDetails(${spell.zauberId})">
+    <div class="spellCard" onclick="showSpellDetails(${index})">
         <div class="spellCardImg">
         <img class="spellCardImage" src="./media/img/schulen/${schulenBild}" alt="">
         </div>
