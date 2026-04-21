@@ -72,89 +72,6 @@ function sortSpellListByLevel() {
     });
 }
 
-
-//------------------Buch Funktionen------------------//
-//---------------------------------------------------//
-// Buch Hauptfunktionen Start
-function resetBook() {
-    $(book).turn('destroy').html('');
-    // Startcover Hinzufügen
-    let covers = `
-    <div class="hard"><div id="cover"><div id="header">Das Zauberbuch des Magiers</div><img src="./media/img/dnd_logo.png" alt=""></div></div>
-    <div class="hard"></div>
-    <div class="hard"></div>
-    <div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>
-    `
-    book.innerHTML = covers;
-        // turn.js initialisieren
-    $(book).turn();
-}
-function addPages(content1, content2) {
-    let totalPages = $(book).turn('pages') || $(book).children().length;
-    if (!totalPages || totalPages < 2) {
-        // noch kein Endcover / zu wenig Seiten -> normal hinzufügen
-        $(book).turn('addPage', `<div>${content1}</div>`);
-        $(book).turn('addPage', `<div>${content2}</div>`);
-        return;
-    }
-
-    // Endcover beibehalten und später wieder anfügen:
-    let backCoverIndex = totalPages;
-    let priorCoverIndex = totalPages - 1;
-
-    // Vor dem Endcover einfügen, indem wir die aktuelle Endcover-Position verwenden.
-    // Dies sollte in turn.js automatisch die Seite an die richtige Stelle schieben.
-    $(book).turn('addPage', `<div>${content1}</div>`, priorCoverIndex);
-    $(book).turn('addPage', `<div>${content2}</div>`, backCoverIndex);
-
-    let endCover1 = '<div class="hard"></div>'
-    let endCover2 = '<div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>'
-
-    // Endcover wieder hinzufügen, damit sie am Ende bleiben.
-    $(book).turn('addPage', endCover1, backCoverIndex+1);
-    $(book).turn('addPage', endCover2, backCoverIndex+2);
-}
-function addSinglePage(content){
-    let totalPages = $(book).turn('pages') || $(book).children().length;
-    if (!totalPages || totalPages < 1) {
-        // noch kein Endcover / zu wenig Seiten -> normal hinzufügen
-        $(book).turn('addPage', `<div>${content}</div>`);
-        return;
-    }
-
-    // Endcover beibehalten und später wieder anfügen:
-    let backCoverIndex = totalPages;
-    let priorCoverIndex = totalPages - 1;
-
-    // Vor dem Endcover einfügen, indem wir die aktuelle Endcover-Position verwenden.
-    // Dies sollte in turn.js automatisch die Seite an die richtige Stelle schieben.
-    $(book).turn('addPage', `<div>${content}</div>`, priorCoverIndex);
-
-    let endCover1 = '<div class="hard"></div>'
-    let endCover2 = '<div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>'
-
-    // Endcover wieder hinzufügen, damit sie am Ende bleiben.
-    $(book).turn('addPage', endCover1, backCoverIndex);
-    $(book).turn('addPage', endCover2, backCoverIndex+1);
-}
-
-function goToPage(pageNumber) {
-    $(book).turn('page', pageNumber);
-}
-
-function fillPages(){
-    //Fügt so viele seiten hinzu das, dass buch am ende eine Gerade Seitenanzahl hat, damit die Endcover immer auf der richtigen Seite sind
-    let totalPages = $(book).turn('pages') || $(book).children().length;
-    if(totalPages % 2 !== 0){
-        addSinglePage('');
-    }
-}
-function goToGrad(stufe){
-    //Berechnen wie 
-}
-// Buch Hauptfunktionen Ende
-
-
 //------------------Startseite------------------//
 //----------------------------------------------//
 //Startseite
@@ -272,140 +189,6 @@ function showStartPage() {
     addPages(content2, '');
 }
 
-//------------------Login Seite------------------//
-function loginPage() {
-    let loginOverlay =`
-    <div id="loginOverlay">
-        <div id="loginForm">
-            <h2>Login</h2>
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <button id="submitLogin" onclick="submitLogin()">Login</button>
-            <button id="closeLogin" onclick="closeLogin()">Schließen</button>
-            <h2>Noch kein Account?</h2>
-            <button id="goToRegister" onclick="registerPage()">Registrieren</button>
-        </div>
-    </div>
-    `
-    wrapper.insertAdjacentHTML('beforeend', loginOverlay);
-}
-
-function registerPage() {
-    closeLogin();
-    let registerOverlay =`
-    <div id="registerOverlay">
-        <div id="registerForm">
-            <h2>Registrieren</h2>
-            <input type="text" id="regUsername" placeholder="Username">
-            <input type="password" id="regPassword" placeholder="Passwort">
-            <input type="password" id="regPasswordAgain" placeholder="Passwort wiederholen">
-            <button id="submitRegister" onclick="submitRegister()">Registrieren</button>
-            <button id="closeRegister" onclick="closeRegister()">Schließen</button>
-        </div>
-    </div>
-    `
-    wrapper.insertAdjacentHTML('beforeend', registerOverlay);
-}
-
-function closeLogin() {
-    let loginOverlay = document.getElementById("loginOverlay");
-    if (loginOverlay) {
-        loginOverlay.remove();
-    }
-}
-
-function closeRegister() {
-    let registerOverlay = document.getElementById("registerOverlay");
-    if (registerOverlay) {
-        registerOverlay.remove();
-    }
-}
-
-async function submitLogin() {
-    let username = document.getElementById("username").value.trim();
-    let password = document.getElementById("password").value;
-
-    if (!username || !password) {
-        alert("Bitte Username und Passwort eingeben.");
-        return;
-    }
-
-    let result = await login(username, password);
-    console.log(result);
-
-    if (result.success) {
-        userInfo.username = username;
-        userInfo.loggedIn = true;
-        userInfo.userID = result.userId;
-        document.getElementById("loginBtn").innerHTML = "Logut";
-        document.getElementById("loginBtn").onclick = submitLogout;
-        closeLogin();
-    } else {
-        alert(result.message || "Login fehlgeschlagen");
-    }
-}
-
-async function submitRegister() {
-    let username = document.getElementById("regUsername").value.trim();
-    let password = document.getElementById("regPassword").value;
-    let passwordAgain = document.getElementById("regPasswordAgain").value;
-
-    // Pflichtfelder prüfen
-    if (!username || !password || !passwordAgain) {
-        alert("Bitte alle Felder ausfüllen.");
-        return;
-    }
-
-    // Passwortvergleich
-    if (password !== passwordAgain) {
-        alert("Die Passwörter stimmen nicht überein.");
-        return;
-    }
-
-    // Mindestlänge
-    if (password.length < 6) {
-        alert("Das Passwort muss mindestens 6 Zeichen lang sein.");
-        return;
-    }
-
-    try {
-        let result = await register(username, password);
-
-        if (result.success) {
-
-            closeRegister();
-            loginPage();
-        } else {
-            alert(result.message || "Registrierung fehlgeschlagen.");
-        }
-
-    } catch (error) {
-        console.error("Registrierungsfehler:", error);
-        alert("Serverfehler bei der Registrierung.");
-    }
-}
-
-async function submitLogout() {
-    try {
-        let result = await logout();
-
-        if (result.success) {
-            userInfo.username = null;
-            userInfo.loggedIn = false;
-            userInfo.userID = null;
-
-            let loginBtn = document.getElementById("loginBtn");
-            loginBtn.innerHTML = "Login";
-            loginBtn.onclick = loginPage;
-            location.reload();
-        }
-
-    } catch (error) {
-        console.error("Logout Fehler:", error);
-        alert("Serverfehler beim Logout.");
-    }
-}
-
 //------------------Klassenfunktionen------------------//
 async function showClassDynamic(classId) {
     const { name, image } = classData[classId];
@@ -413,13 +196,16 @@ async function showClassDynamic(classId) {
     let answer = await getSpellsByClass(classId);
     spellList = answer.data;
     resetBook();
-
     let start1 = `
+    <div id="classBigImg"><img src="./media/img/klassen/${image}_bild.png" alt=""></div>
+    <div id="classDescription">
         <div id="classHeader">
-            <h1>${name}</h1>
             <img src="./media/img/klassen/${image}.jpeg" alt="">
-            <div id="classDescription"></div>
+            <h1>${name}</h1>
         </div>
+        <div id="descriptionText">
+        </div>
+    </div>
     `;
     let start2 = loadSpellLevelTable();
     addPages('', start1);
