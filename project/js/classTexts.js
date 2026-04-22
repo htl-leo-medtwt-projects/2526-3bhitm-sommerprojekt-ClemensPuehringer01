@@ -1,1 +1,24 @@
-const bardInfoTxt=``
+const bardeInfoTxt=`
+Mit einem Instrument in der Hand und tausend Geschichten im Gepäck ist der Barde weit mehr als nur ein Musiker. Er ist Chronist, Verführer, Spion und manchmal auch der Funke, der ganze Reiche ins Wanken bringt. Seine Lieder tragen die Macht alter Legenden in sich – sie können Wunden heilen, Herzen entflammen oder den Mut selbst aus den tapfersten Kriegern reißen. Doch hinter seinem Charme verbirgt sich oft ein scharfer Verstand und ein noch schärferes Gespür für Menschen. Ein Barde weiß: Worte sind mächtiger als Klingen… wenn man sie richtig einsetzt.
+`
+const druideInfoTxt=`
+Der Druide ist ein Hüter uralter Geheimnisse, ein Bindeglied zwischen Zivilisation und ungezähmter Wildnis. Tief in ihm pulsiert der Rhythmus der Natur – das Wachstum der Pflanzen, das Heulen des Windes, das unaufhaltsame Vergehen aller Dinge. Er nimmt viele Formen an, wandelt zwischen Gestalten und Rollen, doch seine Loyalität gilt stets dem Gleichgewicht. Wo Wälder brennen oder die Erde ausgebeutet wird, erhebt er sich – ruhig wie Moos oder zerstörerisch wie ein Sturm. Den Druiden zu verstehen heißt, die Natur selbst zu verstehen… und das gelingt nur den Wenigsten.
+`
+const hexenmeisterInfoTxt=`
+Der Kleriker ist mehr als ein Diener der Götter – er ist ihr Werkzeug in der sterblichen Welt. Durch unerschütterlichen Glauben kanalisiert er göttliche Energie, die sowohl Leben schenken als auch vernichten kann. Jeder Schritt, den er macht, ist von einer höheren Bestimmung geleitet, auch wenn diese nicht immer klar zu erkennen ist. Manche Kleriker bringen Hoffnung und Heilung in dunkle Zeiten, andere tragen den göttlichen Zorn auf das Schlachtfeld. Doch alle teilen eines: den festen Glauben daran, dass ihre Taten Teil eines größeren Plans sind.
+`
+const klerikerInfoTxt=`
+Der Kleriker ist mehr als ein Diener der Götter – er ist ihr Werkzeug in der sterblichen Welt. Durch unerschütterlichen Glauben kanalisiert er göttliche Energie, die sowohl Leben schenken als auch vernichten kann. Jeder Schritt, den er macht, ist von einer höheren Bestimmung geleitet, auch wenn diese nicht immer klar zu erkennen ist. Manche Kleriker bringen Hoffnung und Heilung in dunkle Zeiten, andere tragen den göttlichen Zorn auf das Schlachtfeld. Doch alle teilen eines: den festen Glauben daran, dass ihre Taten Teil eines größeren Plans sind.
+`
+const magierInfoTxt=`
+Für den Magier ist Magie kein Wunder, sondern eine Wissenschaft – komplex, präzise und voller Regeln. Jahre, oft Jahrzehnte des Studiums haben ihn gelehrt, die Struktur der Realität zu verstehen und zu manipulieren. In staubigen Bibliotheken und verborgenen Türmen sammelt er Wissen, das für andere unbegreiflich bleibt. Jeder Zauber, den er wirkt, ist das Ergebnis harter Arbeit und disziplinierter Forschung. Doch mit wachsendem Wissen wächst auch die Versuchung, Grenzen zu überschreiten. Denn wer die Realität formen kann… könnte versucht sein, sie neu zu erschaffen.
+`
+const paladinInfoTxt=`
+Der Paladin ist die Verkörperung eines Ideals – ein Krieger, dessen Stärke aus seinem Eid erwächst. Ob er einem Gott dient oder einem eigenen Kodex folgt, seine Überzeugung ist unerschütterlich. Diese innere Kraft verleiht ihm die Fähigkeit, das Böse zu bekämpfen, Verbündete zu schützen und selbst im Angesicht der Dunkelheit standhaft zu bleiben. Doch ein Eid ist mehr als ein Versprechen – er ist eine Bürde. Jeder Zweifel, jeder Fehltritt kann schwer wiegen. Dennoch schreitet der Paladin voran, ein leuchtendes Symbol von Hoffnung… oder ein unerbittlicher Richter.
+`
+const waldlauferInfoTxt=`
+Fernab von Städten und Höfen findet der Waldläufer sein Zuhause. Er ist Jäger, Späher und Überlebenskünstler – jemand, der in der Wildnis nicht nur existiert, sondern mit ihr verschmilzt. Seine Sinne sind geschärft, sein Körper trainiert, sein Geist wachsam. Er kennt die Spuren von Kreaturen, die andere nicht einmal wahrnehmen, und bewegt sich lautlos durch unwegsames Gelände. Oft steht er an der Grenze zwischen Zivilisation und Chaos, der Erste, der Bedrohungen begegnet, die aus der Wildnis kommen. Allein oder mit Gefährten – der Waldläufer ist stets auf der Jagd.
+`
+const zaubererInfoTxt=`
+Anders als der Magier hat der Zauberer seine Kräfte nie erlernt – sie sind ein Teil von ihm, tief verwurzelt in seinem Wesen. Vielleicht fließt das Blut eines Drachen durch seine Adern, vielleicht war er einst von roher Magie berührt. Was auch immer die Quelle ist, seine Macht ist instinktiv, wild und oft unberechenbar. Jeder Zauber ist ein Ausdruck seiner Emotionen, seiner Persönlichkeit – intensiv und manchmal gefährlich. Ein Zauberer muss nicht lernen, Magie zu wirken… er muss lernen, sie zu kontrollieren, bevor sie ihn kontrolliert.
+`

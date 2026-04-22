@@ -504,7 +504,7 @@ label {
     position: absolute;
     left: 2%;
     width: 5%;
-    top: 6%;
+    top: 7.5%;
     max-height: 5%;
     background: #D9D9D9;
     border: solid 2px black;
@@ -527,10 +527,11 @@ label {
     position: absolute;
     transform: translate(-50% -50%);
     opacity: 50%;
-    left: -20%;
+    left: -17%;
     top:20%;
     z-index: 0;
     user-select: none;
+    scale: 1.2;
 }
 #classDescription{
     display: grid;
@@ -560,4 +561,17 @@ label {
 #classHeader>h1{
     color:#fff;
     font-size: 250%;
+}
+#classDescriptionText{
+    width: 70%;
+    font-size: large;
+    background: #685B40;
+    background: var(--cover_Gradient);
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 9999;
+    border-radius: 20px;
+    padding: 1%;
+    border: solid 2px black; 
+    margin-top: 50%;
 }

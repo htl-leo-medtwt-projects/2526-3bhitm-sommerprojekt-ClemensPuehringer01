@@ -9,14 +9,14 @@ let userInfo ={
 }
 
 const classData = {
-    1: { name: "Barde",        image: "barde"        },
-    2: { name: "Druide",       image: "druide"       },
-    3: { name: "Hexenmeister", image: "hexenmeister" },
-    4: { name: "Kleriker",     image: "kleriker"     },
-    5: { name: "Magier",       image: "magier"       },
-    6: { name: "Paladin",      image: "paladin"      },
-    7: { name: "Waldläufer",   image: "waldlaeufer"  },
-    8: { name: "Zauberer",     image: "zauberer"     },
+    1: { name: "Barde",        image: "barde"        , text: bardeInfoTxt},
+    2: { name: "Druide",       image: "druide"       , text: druideInfoTxt},
+    3: { name: "Hexenmeister", image: "hexenmeister" , text: hexenmeisterInfoTxt},
+    4: { name: "Kleriker",     image: "kleriker"     , text: klerikerInfoTxt},
+    5: { name: "Magier",       image: "magier"       , text: magierInfoTxt},
+    6: { name: "Paladin",      image: "paladin"      , text: paladinInfoTxt},
+    7: { name: "Waldläufer",   image: "waldlaeufer"  , text: waldlauferInfoTxt},
+    8: { name: "Zauberer",     image: "zauberer"     , text: zaubererInfoTxt},
 };
 
 let currentSpell = null;
@@ -191,7 +191,7 @@ function showStartPage() {
 
 //------------------Klassenfunktionen------------------//
 async function showClassDynamic(classId) {
-    const { name, image } = classData[classId];
+    const { name, image, text } = classData[classId];
     
     let answer = await getSpellsByClass(classId);
     spellList = answer.data;
@@ -203,7 +203,8 @@ async function showClassDynamic(classId) {
             <img src="./media/img/klassen/${image}.jpeg" alt="">
             <h1>${name}</h1>
         </div>
-        <div id="descriptionText">
+        <div id="classDescriptionText">
+        <p>${text}</p>
         </div>
     </div>
     `;
@@ -294,7 +295,8 @@ function writeSpellCard(spell, index){
         </div>
         <div class="spellCardLables">
         ${verified ? '<span class="spellLable">Verifiziert</span>' : ''}
-        ${selfMade ? '<span class="spellLable">Eigenkreation</span>' : ''}  
+        ${selfMade ? '<span class="spellLable">Eigenkreation</span>' : ''} 
+        <span class="spellLable">${spell.regelbuchName}</span> 
         </div>
         </div>
         `
