@@ -33,12 +33,15 @@ SELECT
     z.wirkungsdauerEinheit,
     z.beschreibung,
     z.userId,
+    z.regelbuchId,
+    r.regelbuchName,
 
     GROUP_CONCAT(k.klassenName SEPARATOR ', ') AS klassen,
     GROUP_CONCAT(k.klassenId) AS klassenIds
 
 FROM zauber z
 JOIN schule s ON z.schulenId = s.schulenId
+LEFT JOIN regelbuch r ON z.regelbuchId = r.regelbuchId
 LEFT JOIN zauber_klasse zk ON z.zauberId = zk.zauberId
 LEFT JOIN klasse k ON zk.klassenId = k.klassenId
 

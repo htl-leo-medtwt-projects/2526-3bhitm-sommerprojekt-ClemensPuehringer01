@@ -36,14 +36,15 @@ if (
 $userId = $_SESSION["userId"];
 
 // optionale Werte
-$avgDmg = $data["avgDmg"] ?? null;
+$avgDmg      = $data["avgDmg"] ?? null;
 $materKompDet = $data["materKompDet"] ?? null;
+$regelbuchId = isset($data["regelbuchId"]) ? (int)$data["regelbuchId"] : null;
 
 $verbalKomp = !empty($data["verbalKomp"]) ? 1 : 0;
 $gestKomp   = !empty($data["gestKomp"]) ? 1 : 0;
 $materKomp  = !empty($data["materKomp"]) ? 1 : 0;
 
-// TRANSACTION START (wichtig!)
+// TRANSACTION START
 $conn->begin_transaction();
 
 try {
@@ -65,14 +66,15 @@ try {
         wirkungsdauer,
         wirkungsdauerEinheit,
         beschreibung,
-        userId
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        userId,
+        regelbuchId
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
 
     $stmt = $conn->prepare($sql);
 
     $stmt->bind_param(
-        "siiiisiiiisissi",
+        "siiiisiiiissssii",
         $data["zauberName"],
         $data["schulenId"],
         $data["stufe"],
@@ -87,7 +89,8 @@ try {
         $data["wirkungsdauer"],
         $data["wirkungsdauerEinheit"],
         $data["beschreibung"],
-        $userId
+        $userId,
+        $regelbuchId
     );
 
     $stmt->execute();
