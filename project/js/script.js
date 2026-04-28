@@ -1,6 +1,6 @@
 let book = document.getElementsByClassName("flipbook")[0];
 let wrapper = document.getElementById("outerWrapper");
-
+let randomImg;
 
 let userInfo ={
     userID: null,
@@ -22,6 +22,10 @@ const classData = {
 let currentSpell = null;
 let spellList = [];
 let spellsPerPage = 4;
+
+function backCoverRandomizer(){
+    randomImg = Math.floor(Math.random() * 6)+1;
+}
 
 function loadSpellLevelTable(){
     return `
@@ -77,7 +81,8 @@ function sortSpellListByLevel() {
 //Startseite
 showStartPage();
 function showStartPage() {
-    resetBook();
+    backCoverRandomizer();
+    resetBook(randomImg);
     let content1 = `
     <div id="loginBtn" onclick="loginPage()">Login</div>
     <div id="startPage">

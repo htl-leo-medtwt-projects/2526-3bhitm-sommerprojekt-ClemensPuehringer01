@@ -1,13 +1,16 @@
-function resetBook() {
+let backcoverNumber;
+
+function resetBook(coverNumber) {
     $(book).turn('destroy').html('');
     // Startcover Hinzufügen
     let covers = `
     <div class="hard"><div id="cover"><div id="header">Das Zauberbuch des Magiers</div><img src="./media/img/dnd_logo.png" alt=""></div></div>
     <div class="hard"></div>
     <div class="hard"></div>
-    <div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>
+    <div class="hard"><img src="./media/img/jungs/${coverNumber}.png" alt="" style="width: 100%;"></div>
     `
     book.innerHTML = covers;
+    backcoverNumber = coverNumber;
         // turn.js initialisieren
     $(book).turn();
 }
@@ -30,7 +33,7 @@ function addPages(content1, content2) {
     $(book).turn('addPage', `<div>${content2}</div>`, backCoverIndex);
 
     let endCover1 = '<div class="hard"></div>'
-    let endCover2 = '<div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>'
+    let endCover2 = '<div class="hard"><img src="./media/img/jungs/'+backcoverNumber+'.png" alt="" style="width: 100%;"></div>'
 
     // Endcover wieder hinzufügen, damit sie am Ende bleiben.
     $(book).turn('addPage', endCover1, backCoverIndex+1);
@@ -53,7 +56,7 @@ function addSinglePage(content){
     $(book).turn('addPage', `<div>${content}</div>`, priorCoverIndex);
 
     let endCover1 = '<div class="hard"></div>'
-    let endCover2 = '<div class="hard"><img src="./media/jutsch.jpeg" alt="" style="width: 100%;"></div>'
+    let endCover2 = '<div class="hard"><img src="./media/img/jungs/'+backcoverNumber+'.png" alt="" style="width: 100%;"></div>'
 
     // Endcover wieder hinzufügen, damit sie am Ende bleiben.
     $(book).turn('addPage', endCover1, backCoverIndex);
