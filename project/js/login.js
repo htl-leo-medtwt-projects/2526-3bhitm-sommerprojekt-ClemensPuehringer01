@@ -62,8 +62,12 @@ async function submitLogin() {
         userInfo.username = username;
         userInfo.loggedIn = true;
         userInfo.userID = result.userId;
-        document.getElementById("loginBtn").innerHTML = "Logut";
+        document.getElementById("loginBtn").innerHTML = "Logout";
         document.getElementById("loginBtn").onclick = submitLogout;
+
+       document.getElementById("newSpellBtn").classList.remove("disabled");
+       document.getElementById("newSpellBtn").onclick = addSpell;
+
         closeLogin();
     } else {
         alert(result.message || "Login fehlgeschlagen");

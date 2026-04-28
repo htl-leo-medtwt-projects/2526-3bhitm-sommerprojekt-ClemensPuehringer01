@@ -83,8 +83,20 @@ showStartPage();
 function showStartPage() {
     backCoverRandomizer();
     resetBook(randomImg);
-    let content1 = `
-    <div id="loginBtn" onclick="loginPage()">Login</div>
+    let content1 = '';
+    if (userInfo.loggedIn) {
+    content1 += `
+        <div id="loginBtn" onclick="submitLogout()">Logout</div>
+        <div id="newSpellBtn" onclick="openSpellAddOverlay()">New Spell</div>
+    `;
+    } else {
+        content1 += `
+            <div id="loginBtn" onclick="loginPage()">Login</div>
+            <div id="newSpellBtn" class="disabled" onclick="">New Spell</div>
+        `;
+    }
+
+    content1 += `
     <div id="startPage">
         <div id="searchBar">
             <h2 id="searchHeader">Was möchtest du lernen?</h2>
