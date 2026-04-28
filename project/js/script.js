@@ -200,7 +200,8 @@ async function showClassDynamic(classId) {
     
     let answer = await getSpellsByClass(classId);
     spellList = answer.data;
-    resetBook();
+    backCoverRandomizer();
+    resetBook(randomImg);
     let start1 = `
     <div id="classBigImg"><img src="./media/img/klassen/${image}_bild.png" alt=""></div>
     <div id="classDescription">
