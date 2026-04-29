@@ -92,7 +92,7 @@ function showStartPage() {
     } else {
         content1 += `
             <div id="loginBtn" onclick="loginPage()">Login</div>
-            <div id="newSpellBtn" class="disabled" onclick="">New Spell</div>
+            <div id="newSpellBtn" class="disabled" onclick="openSpellAddOverlay()">New Spell</div>
         `;
     }
 
@@ -319,4 +319,241 @@ function writeSpellCard(spell, index){
         </div>
         `
     return spellCard;
+}
+
+function openSpellAddOverlay(){
+    let formHtml = `
+<div id="zauberOverlay">
+<form id="zauberForm" onsubmit="return false;">
+<div id="errorBox" style="display:none;"></div>
+
+    <input type="text" id="zauberName" placeholder="Zaubername">
+
+    <select id="schulenId">
+        <option value="">Schule</option>
+        <option value="1">Bannmagie</option>
+        <option value="2">Beschwörung</option>
+        <option value="3">Erkenntnis</option>
+        <option value="4">Verzauberung</option>
+        <option value="5">Hervorrufung</option>
+        <option value="6">Illusion</option>
+        <option value="7">Nekromantie</option>
+        <option value="8">Verwandlung</option>
+    </select>
+
+    <select id="stufe">
+        <option value="">Stufe</option>
+        <option value="0">Zaubertrick</option>
+        <option value="1">Grad 1</option>
+        <option value="2">Grad 2</option>
+        <option value="3">Grad 3</option>
+        <option value="4">Grad 4</option>
+        <option value="5">Grad 5</option>
+        <option value="6">Grad 6</option>
+        <option value="7">Grad 7</option>
+        <option value="8">Grad 8</option>
+        <option value="9">Grad 9</option>
+    </select>
+
+    <input type="number" id="avgDmg" placeholder="Ø Schaden">
+    <input type="number" id="zeitaufwand" placeholder="Zeitaufwand">
+
+    <select id="zeiteinheit">
+        <option value="">Zeiteinheit</option>
+        <option value="aktion">Aktion</option>
+        <option value="bonusaktion">Bonusaktion</option>
+        <option value="reaktion">Reaktion</option>
+        <option value="runde">Runde</option>
+        <option value="minute">Minute</option>
+        <option value="stunde">Stunde</option>
+    </select>
+
+    <div id="reichweiteContainer">
+        <select id="reichweiteTyp">
+            <option value="">Reichweite</option>
+            <option value="-1">Selbst</option>
+            <option value="0">Berührung</option>
+            <option value="custom">Distanz</option>
+        </select>
+        <input type="number" id="reichweiteWert" placeholder="Meter" disabled>
+    </div>
+
+    <div class="checkboxGroup">
+        <label><input type="checkbox" id="verbalKomp"> Verbal</label>
+        <label><input type="checkbox" id="gestKomp"> Gestik</label>
+        <label><input type="checkbox" id="materKomp"> Material</label>
+    </div>
+
+    <input type="text" id="materKompDet" placeholder="Material Details">
+
+    <input type="number" id="wirkungsdauer" placeholder="Dauer">
+
+    <select id="wirkungsdauerEinheit">
+        <option value="">Dauer</option>
+        <option value="sofort">Sofort</option>
+        <option value="runde">Runde(n)</option>
+        <option value="minute">Minute(n)</option>
+        <option value="stunde">Stunde(n)</option>
+        <option value="tag">Tag(e)</option>
+        <option value="permanent">Permanent</option>
+    </select>
+
+    <textarea id="beschreibung" placeholder="Beschreibung"></textarea>
+
+    <select id="regelbuchId">
+        <option value="">Regelwerk</option>
+        <option value="1">5.5E</option>
+        <option value="2">5E</option>
+        <option value="3">4E</option>
+        <option value="4">3.5E</option>
+        <option value="5">2E</option>
+        <option value="6">1E</option>
+        <option value="7">Homebrew</option>
+    </select>
+
+    <div id="klassenSelect">
+        <label><input type="checkbox" class="klasse" value="1"> Barde</label>
+        <label><input type="checkbox" class="klasse" value="2"> Druide</label>
+        <label><input type="checkbox" class="klasse" value="3"> Hexenmeister</label>
+        <label><input type="checkbox" class="klasse" value="4"> Kleriker</label>
+        <label><input type="checkbox" class="klasse" value="5"> Magier</label>
+        <label><input type="checkbox" class="klasse" value="6"> Paladin</label>
+        <label><input type="checkbox" class="klasse" value="7"> Waldläufer</label>
+        <label><input type="checkbox" class="klasse" value="8"> Zauberer</label>
+    </div>
+
+    <button type="button" onclick="sendZauber()">Speichern</button>
+
+</form>
+</div>
+`;
+    wrapper.insertAdjacentHTML('beforeend', formHtml);
+    initZauberForm();
+}
+
+function sendZauber() {
+
+    var errors = [];
+
+    var zauberName = document.getElementById("zauberName").value;
+    var schulenId = document.getElementById("schulenId").value;
+    var stufe = document.getElementById("stufe").value;
+    var beschreibung = document.getElementById("beschreibung").value;
+    var regelbuchId = document.getElementById("regelbuchId").value;
+
+    // Klassen prüfen
+    var klassen = [];
+    var checkboxes = document.querySelectorAll(".klasse");
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            klassen.push(parseInt(checkboxes[i].value));
+        }
+    }
+
+    if (zauberName === "") {
+        errors.push("Zaubername fehlt");
+    }
+
+    if (schulenId === "") {
+        errors.push("Schule fehlt");
+    }
+
+    if (stufe === "") {
+        errors.push("Stufe fehlt");
+    }
+
+    if (beschreibung === "") {
+        errors.push("Beschreibung fehlt");
+    }
+
+    if (regelbuchId === "") {
+        errors.push("Regelbuch muss ausgewählt werden");
+    }
+
+    if (klassen.length === 0) {
+        errors.push("Mindestens eine Klasse muss gewählt werden");
+    }
+
+    if (errors.length > 0) {
+        showError(errors);
+        return;
+    }
+
+    document.getElementById("errorBox").style.display = "none";
+
+    // Reichweite
+    var reichweiteTyp = document.getElementById("reichweiteTyp").value;
+    var reichweiteWert = document.getElementById("reichweiteWert").value;
+
+    var reichweite;
+
+    if (reichweiteTyp === "custom") {
+        reichweite = parseInt(reichweiteWert);
+    } else {
+        reichweite = parseInt(reichweiteTyp);
+    }
+
+    var data = {
+        zauberName: zauberName,
+        schulenId: parseInt(schulenId),
+        stufe: parseInt(stufe),
+
+        avgDmg: parseInt(document.getElementById("avgDmg").value),
+        zeitaufwand: parseInt(document.getElementById("zeitaufwand").value),
+        zeiteinheit: document.getElementById("zeiteinheit").value,
+
+        reichweite: reichweite,
+
+        verbalKomp: document.getElementById("verbalKomp").checked,
+        gestKomp: document.getElementById("gestKomp").checked,
+        materKomp: document.getElementById("materKomp").checked,
+        materKompDet: document.getElementById("materKompDet").value,
+
+        wirkungsdauer: parseInt(document.getElementById("wirkungsdauer").value),
+        wirkungsdauerEinheit: document.getElementById("wirkungsdauerEinheit").value,
+
+        beschreibung: beschreibung,
+
+        regelbuchId: parseInt(regelbuchId),
+
+        klassenIds: klassen
+    };
+
+    addSpell(data)
+}
+
+function initZauberForm() {
+
+    var typ = document.getElementById("reichweiteTyp");
+    var wert = document.getElementById("reichweiteWert");
+
+    typ.addEventListener("change", function () {
+        if (typ.value === "custom") {
+            wert.disabled = false;
+        } else {
+            wert.disabled = true;
+            wert.value = "";
+        }
+    });
+}
+
+function showError(messages) {
+
+    var box = document.getElementById("errorBox");
+
+    var text = "";
+
+    for (var i = 0; i < messages.length; i++) {
+        text += messages[i] + "<br>";
+    }
+
+    text += '<br><button onclick="closeError()">OK</button>';
+
+    box.innerHTML = text;
+    box.style.display = "block";
+}
+
+function closeError() {
+    document.getElementById("errorBox").style.display = "none";
 }

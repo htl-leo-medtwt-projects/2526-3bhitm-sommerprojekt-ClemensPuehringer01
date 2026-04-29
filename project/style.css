@@ -126,6 +126,7 @@ body {
     scale: 1.3;
     transition: 0.3s;
     z-index: 9999; /* Hoher z-index, um sicherzustellen, dass der Button oben ist */
+    cursor: pointer;
 }
 #newSpellBtn:hover {
     background: #BE2B2B;
@@ -218,7 +219,7 @@ input[type="search"] {
     }
 }
 
-label {
+#searchform label {
     position: absolute;
     clip: rect(1px, 1px, 1px, 1px);
     padding: 0;
@@ -601,4 +602,160 @@ label {
     padding: 1%;
     border: solid 2px black; 
     margin-top: 50%;
+}
+/*-------------Zauber Overlay--------------*/
+#zauberOverlay {
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#zauberForm {
+    background: rgba(255, 255, 255, 0.9);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+
+    width: 70%;
+    height: 75%;
+
+    text-align: center;
+    border-radius: 10px;
+    border: solid 5px black;
+    padding: 1%;
+}
+
+#zauberForm input,
+#zauberForm select,
+#zauberForm textarea {
+    width: 90%;
+    border: solid 2px black;
+    border-radius: 10px;
+    font-family: elenora;
+    font-size: 1em;
+    padding: 0.5%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#zauberForm textarea {
+    grid-column: span 3;
+    height: 80px;
+    resize: none;
+}
+
+.checkboxGroup {
+    grid-column: span 3;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#klassenSelect {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+#klassenSelect label {
+    position: static;
+    background: #685B40;
+    color: #FDF4C8;
+    border-radius: 10px;
+    padding: 3px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: 0.3s;
+}
+
+#klassenSelect label:hover {
+    background: #BE2B2B;
+}
+
+#zauberForm button {
+    grid-column: span 3;
+    width: 40%;
+    border: solid 2px black;
+    border-radius: 10px;
+    background: #BE2B2B;
+    color: white;
+    cursor: pointer;
+    font-family: elenora;
+    font-size: 1.5em;
+    transition: 0.3s;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#zauberForm button:hover {
+    background: #D9D9D9;
+    color: black;
+}
+
+#zauberForm label {
+    position: static;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: visible;
+}
+
+#reichweiteContainer {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+#errorBox {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #BE2B2B;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid black;
+    font-family: elenora;
+    font-size: 1.2em;
+    z-index: 10000;
+    max-width: 80%;
+    text-align: center;
+}
+
+#errorBox button {
+    margin-left: 10px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#closeZauberBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+
+    background: #BE2B2B;
+    color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+
+    font-size: 1.2em;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+#closeZauberBtn:hover {
+    background: #D9D9D9;
+    color: black;
 }

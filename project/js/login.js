@@ -66,7 +66,6 @@ async function submitLogin() {
         document.getElementById("loginBtn").onclick = submitLogout;
 
        document.getElementById("newSpellBtn").classList.remove("disabled");
-       document.getElementById("newSpellBtn").onclick = addSpell;
 
         closeLogin();
     } else {
