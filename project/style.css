@@ -476,10 +476,15 @@ input[type="search"] {
 
 /*-------------Zauberliste-----------------*/
 .spellCardContainer{
+    position: absolute;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 25% 25% 25% 25%;
-    gap: 10px;
+    grid-template-rows: 20% 20% 20% 20%;
+    grid-gap: 5%;
+    transform: translate(-50%, -50%);
+    top: 55%;
+    left: 55%;
+    width: 90%;
 }
 .spellCard{
     display: grid;
@@ -506,6 +511,10 @@ input[type="search"] {
 }
 .emptyCard{
     min-height: 15vh;
+    width: 90%;
+    border: solid 4px rgba(119, 83, 32, 0);
+    border-radius: 10px;
+    padding: 1%;
 }
 .spellCardLables{
     display: grid;

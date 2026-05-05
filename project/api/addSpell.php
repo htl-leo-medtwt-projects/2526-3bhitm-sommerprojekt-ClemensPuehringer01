@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -78,24 +80,24 @@ try {
     $stmt = $conn->prepare($sql);
 
     $stmt->bind_param(
-        "siiiisiiiisissii",
-        $data["zauberName"],
-        $data["schulenId"],
-        $data["stufe"],
-        $avgDmg,
-        $data["zeitaufwand"],
-        $data["zeiteinheit"],
-        $data["reichweite"],
-        $verbalKomp,
-        $gestKomp,
-        $materKomp,
-        $materKompDet,
-        $data["wirkungsdauer"],
-        $data["wirkungsdauerEinheit"],
-        $data["beschreibung"],
-        $userId,
-        $regelbuchId
-    );
+    "siiiisiiiissssii",
+    $data["zauberName"],      // s
+    $data["schulenId"],       // i
+    $data["stufe"],           // i
+    $avgDmg,                  // i
+    $data["zeitaufwand"],     // i
+    $data["zeiteinheit"],     // s
+    $data["reichweite"],      // i
+    $verbalKomp,              // i
+    $gestKomp,                // i
+    $materKomp,               // i
+    $materKompDet,            // s
+    $data["wirkungsdauer"],   // i
+    $data["wirkungsdauerEinheit"], // s
+    $data["beschreibung"],    // s
+    $userId,                  // i
+    $regelbuchId              // i
+);
 
     $stmt->execute();
 

@@ -87,12 +87,12 @@ function showStartPage() {
     if (userInfo.loggedIn) {
     content1 += `
         <div id="loginBtn" onclick="submitLogout()">Logout</div>
-        <div id="newSpellBtn" onclick="openSpellAddOverlay()">New Spell</div>
+        <div id="newSpellBtn" onclick="openSpellAddOverlay()">+ Zauber</div>
     `;
     } else {
         content1 += `
             <div id="loginBtn" onclick="loginPage()">Login</div>
-            <div id="newSpellBtn" class="disabled" onclick="openSpellAddOverlay()">New Spell</div>
+            <div id="newSpellBtn" class="disabled" onclick="openSpellAddOverlay()">+ Zauber</div>
         `;
     }
 
@@ -390,7 +390,7 @@ function openSpellAddOverlay(){
 
     <select id="wirkungsdauerEinheit">
         <option value="">Dauer</option>
-        <option value="sofort">Sofort</option>
+        <option value="unmittelbar">Unmittelbar</option>
         <option value="runde">Runde(n)</option>
         <option value="minute">Minute(n)</option>
         <option value="stunde">Stunde(n)</option>
@@ -444,35 +444,46 @@ function sendZauber() {
     // Klassen prüfen
     var klassen = [];
     var checkboxes = document.querySelectorAll(".klasse");
-
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
             klassen.push(parseInt(checkboxes[i].value));
         }
     }
 
+    // --- Pflichtfeld-Validierung ---
     if (zauberName === "") {
         errors.push("Zaubername fehlt");
     }
-
     if (schulenId === "") {
         errors.push("Schule fehlt");
     }
-
     if (stufe === "") {
         errors.push("Stufe fehlt");
     }
-
-    if (beschreibung === "") {
-        errors.push("Beschreibung fehlt");
+    if (beschreibung === ""){
+     errors.push("Beschreibung fehlt");
     }
-
     if (regelbuchId === "") {
         errors.push("Regelbuch muss ausgewählt werden");
     }
-
     if (klassen.length === 0) {
         errors.push("Mindestens eine Klasse muss gewählt werden");
+    }
+
+    // zeitaufwand & zeiteinheit
+    var zeitaufwandRaw = document.getElementById("zeitaufwand").value;
+    var zeiteinheit = document.getElementById("zeiteinheit").value;
+    if (zeitaufwandRaw === "" || isNaN(zeitaufwandRaw)) {
+        errors.push("Zeitaufwand fehlt");
+    }
+    if (zeiteinheit === "") {
+        errors.push("Zeiteinheit fehlt");
+    }
+
+    // wirkungsdauerEinheit
+    var wirkungsdauerEinheit = document.getElementById("wirkungsdauerEinheit").value;
+    if (wirkungsdauerEinheit === "") {
+        errors.push("Wirkungsdauer-Einheit fehlt");
     }
 
     if (errors.length > 0) {
@@ -482,36 +493,46 @@ function sendZauber() {
 
     document.getElementById("errorBox").style.display = "none";
 
-    // Reichweite
+    // --- Reichweite ableiten ---
     var reichweiteTyp = document.getElementById("reichweiteTyp").value;
     var reichweiteWert = document.getElementById("reichweiteWert").value;
-
     var reichweite;
-
     if (reichweiteTyp === "custom") {
-        reichweite = parseInt(reichweiteWert);
+        reichweite = parseInt(reichweiteWert) || 0;
     } else {
-        reichweite = parseInt(reichweiteTyp);
+        reichweite = parseInt(reichweiteTyp) || 0; // z.B. "0" für Berührung
     }
+
+    // --- Zeitaufwand: 0 als Fallback wenn leer ---
+    var zeitaufwand = parseInt(zeitaufwandRaw);
+    if (isNaN(zeitaufwand)) zeitaufwand = 0;
+
+    // --- Wirkungsdauer: 0 als Fallback wenn leer ---
+    var wirkungsdauer = parseInt(document.getElementById("wirkungsdauer").value);
+    if (isNaN(wirkungsdauer)) wirkungsdauer = 0;
+
+    // --- avgDmg: null wenn leer (Spalte erlaubt NULL) ---
+    var avgDmgRaw = document.getElementById("avgDmg").value;
+    var avgDmg = avgDmgRaw !== "" ? parseInt(avgDmgRaw) : null;
 
     var data = {
         zauberName: zauberName,
         schulenId: parseInt(schulenId),
         stufe: parseInt(stufe),
 
-        avgDmg: parseInt(document.getElementById("avgDmg").value),
-        zeitaufwand: parseInt(document.getElementById("zeitaufwand").value),
-        zeiteinheit: document.getElementById("zeiteinheit").value,
+        avgDmg: avgDmg,
+        zeitaufwand: zeitaufwand,
+        zeiteinheit: zeiteinheit,
 
         reichweite: reichweite,
 
         verbalKomp: document.getElementById("verbalKomp").checked,
         gestKomp: document.getElementById("gestKomp").checked,
         materKomp: document.getElementById("materKomp").checked,
-        materKompDet: document.getElementById("materKompDet").value,
+        materKompDet: document.getElementById("materKompDet").value || null,
 
-        wirkungsdauer: parseInt(document.getElementById("wirkungsdauer").value),
-        wirkungsdauerEinheit: document.getElementById("wirkungsdauerEinheit").value,
+        wirkungsdauer: wirkungsdauer,
+        wirkungsdauerEinheit: wirkungsdauerEinheit,
 
         beschreibung: beschreibung,
 
@@ -520,7 +541,8 @@ function sendZauber() {
         klassenIds: klassen
     };
 
-    addSpell(data)
+    addSpell(data);
+    closeZauberOverlay();
 }
 
 function initZauberForm() {
@@ -556,4 +578,10 @@ function showError(messages) {
 
 function closeError() {
     document.getElementById("errorBox").style.display = "none";
+}
+function closeZauberOverlay(){
+    let overlay = document.getElementById("zauberOverlay");
+    if(overlay){
+        overlay.remove();
+    }
 }
