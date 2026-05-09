@@ -559,6 +559,28 @@ input[type="search"] {
     border: solid 2px black;
     scale: 1.4;
 }
+
+#classHomeBtn {
+    position: absolute;
+    width: 5%;
+    top: 22%;
+    left: 2%;
+    background: #D9D9D9;
+    border: solid 2px black;
+    text-align: center;
+    padding: 1%;
+    border-radius: 10px;
+    scale: 1.3;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 9999;
+}
+#classHomeBtn:hover {
+    background: #BE2B2B;
+    color: white;
+    border: solid 2px black;
+    scale: 1.4;
+}
 /*--------------Klassen Style---------------*/
 #classBigImg{
     position: absolute;
@@ -767,4 +789,71 @@ input[type="search"] {
 #closeZauberBtn:hover {
     background: #D9D9D9;
     color: black;
+}
+/*------------Zaubergrad-----------*/
+/*-------------Zaubergrade Style--------------*/
+.spellLevel {
+    display: grid;
+    grid-template-columns: auto;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+#gradHeader {
+    font-size: 2.5em;
+    color: black;
+    text-align: center;
+    border-bottom: 3px solid rgba(119, 83, 32, 0.973);
+    padding-bottom: 2%;
+    margin-bottom: 3%;
+}
+
+#gradContainer {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 5px;
+    border-radius: 15px;
+    padding: 3%;
+    border: solid 3px rgba(119, 83, 32, 0.973);
+}
+
+.zauberGrad {
+    font-size: 1.4em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5% 3%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-bottom: 1px solid rgba(119, 83, 32, 0.3);
+    color: #2f2f2f;
+    letter-spacing: 0.5px;
+}
+
+.zauberGrad:last-child {
+    border-bottom: none;
+}
+
+.zauberGrad:hover {
+    background: rgba(190, 43, 43, 0.2);
+    color: #BE2B2B;
+    scale: 1.02;
+    border-bottom: 1px solid #BE2B2B;
+    padding-left: 5%;
+}
+.gradArrow {
+    font-size: 1.2em;
+    color: rgba(119, 83, 32, 0.973);
+    transition: 0.3s;
+}
+
+.zauberGrad:hover .gradArrow {
+    color: #BE2B2B;
+    transform: translateX(5px);
 }

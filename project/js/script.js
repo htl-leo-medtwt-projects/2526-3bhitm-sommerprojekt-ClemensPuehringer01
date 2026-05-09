@@ -28,43 +28,34 @@ function backCoverRandomizer(){
 }
 
 function loadSpellLevelTable(){
+    const grade = [
+        { label: "Zaubertrick", stufe: 0 },
+        { label: "Grad 1", stufe: 1 },
+        { label: "Grad 2", stufe: 2 },
+        { label: "Grad 3", stufe: 3 },
+        { label: "Grad 4", stufe: 4 },
+        { label: "Grad 5", stufe: 5 },
+        { label: "Grad 6", stufe: 6 },
+        { label: "Grad 7", stufe: 7 },
+        { label: "Grad 8", stufe: 8 },
+        { label: "Grad 9", stufe: 9 },
+    ];
+
+    let rows = grade.map(g => `
+        <div class="zauberGrad" onclick="goToGrad(${g.stufe})">
+            <span>${g.label}</span>
+            <span class="gradArrow">&#8594;</span>
+        </div>
+    `).join('');
+
     return `
     <div class="spellLevel">
-    <h2 id="gradHeader">Zaubergräder</h2>
-            <div id="gradContainer"> 
-            <div class="zauberGrad" onclick="goToGrad(0)">
-            .................................................................................Zaubertrick
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(1)">
-            ......................................................................................Grad 1
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(2)">
-            ......................................................................................Grad 2
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(3)">
-            ......................................................................................Grad 3
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(4)">
-            ......................................................................................Grad 4
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(5)">
-            ......................................................................................Grad 5
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(6)">
-            ......................................................................................Grad 6
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(7)">
-            ......................................................................................Grad 7
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(8)">
-            ......................................................................................Grad 8
-            </div>
-            <div class="zauberGrad" onclick="goToGrad(9)">
-            ......................................................................................Grad 9
-            </div>
+        <h2 id="gradHeader">Zaubergrade</h2>
+        <div id="gradContainer">
+            ${rows}
         </div>
     </div>
-    `
+    `;
 }
 
 function sortSpellListByLevel() {
@@ -78,7 +69,13 @@ function sortSpellListByLevel() {
 
 //------------------Startseite------------------//
 //----------------------------------------------//
-//Startseite
+//Startseite^
+function backToStartPage() {
+    document.getElementById("classHomeBtn").style.display = "none";
+    currentClassId = null;
+    showStartPage();
+    goToPage(4)
+}
 showStartPage();
 function showStartPage() {
     backCoverRandomizer();
@@ -214,6 +211,10 @@ async function showClassDynamic(classId) {
     spellList = answer.data;
     backCoverRandomizer();
     resetBook(randomImg);
+
+    currentClassId = classId;
+    document.getElementById("classHomeBtn").style.display = "block";
+
     let start1 = `
     <div id="classBigImg"><img src="./media/img/klassen/${image}_bild.png" alt=""></div>
     <div id="classDescription">
@@ -235,27 +236,75 @@ async function showClassDynamic(classId) {
     goToPage(4);
 }
 
-function drawSpellCards(){
-        sortSpellListByLevel();
+// Seite 3 ist die Klassenbeschreibung (erste rechte Seite nach den Hardcovern)
+function goToClassHome() {
+    goToPage(4);
+}
 
-    for (let i = 0; i < spellList.length; i += 2*spellsPerPage) {
-        let pageContent1 = `<div class="spellCardContainer">`;
-        let pageContent2 = `<div class="spellCardContainer">`;
-        for (let j = i; j < i + spellsPerPage && j < spellList.length; j++) {
-            let spell = spellList[j];
-            pageContent1 += writeSpellCard(spell, j);
+function drawSpellCards() {
+    sortSpellListByLevel();
+    gradPageMap = {}; // zurücksetzen
+
+    // Zauber nach Stufe gruppieren
+    let groups = {};
+    for (let spell of spellList) {
+        if (!groups[spell.stufe]) groups[spell.stufe] = [];
+        groups[spell.stufe].push(spell);
+    }
+
+    let sortedLevels = Object.keys(groups).map(Number).sort((a, b) => a - b);
+
+    for (let stufe of sortedLevels) {
+        let spells = groups[stufe];
+
+        // Aktuelle Seitenzahl VOR dem Hinzufügen dieser Gruppe merken
+        // +1 weil addPages die nächste freie Seite belegt
+        // Die Endcover (2 Seiten) abziehen, dann ist das die erste neue Seite
+        let currentPages = $(book).turn('pages') || $(book).children().length;
+        gradPageMap[stufe] = currentPages - 1; // -1 weil vor den Endcovern eingefügt wird
+
+        // Seiten paarweise befüllen
+        for (let i = 0; i < spells.length; i += 2 * spellsPerPage) {
+            let pageContent1 = `<div class="spellCardContainer">`;
+            let pageContent2 = `<div class="spellCardContainer">`;
+
+            for (let j = i; j < i + spellsPerPage && j < spells.length; j++) {
+                pageContent1 += writeSpellCard(spells[j], spellList.indexOf(spells[j]));
+            }
+            // Leere Karten auffüllen
+            let filled1 = Math.min(spellsPerPage, spells.length - i);
+            for (let k = 0; k < spellsPerPage - filled1; k++) {
+                pageContent1 += `<div class="emptyCard"></div>`;
+            }
+            pageContent1 += `</div>`;
+
+            for (let j = i + spellsPerPage; j < i + 2 * spellsPerPage && j < spells.length; j++) {
+                pageContent2 += writeSpellCard(spells[j], spellList.indexOf(spells[j]));
+            }
+            // Leere Karten auffüllen (rechte Seite)
+            let filled2 = Math.max(0, Math.min(spellsPerPage, spells.length - (i + spellsPerPage)));
+            for (let k = 0; k < spellsPerPage - filled2; k++) {
+                pageContent2 += `<div class="emptyCard"></div>`;
+            }
+            pageContent2 += `</div>`;
+
+            addPages(pageContent1, pageContent2);
         }
-        //Falls keine 4 Zauber hinzu gefügt wurden, werden leere Karten hinzugefügt, damit die Seite immer voll ist
-        for(let k = 0; k < spellsPerPage - (Math.min(spellsPerPage, spellList.length - i)); k++){
-            pageContent1 += `<div class="emptyCard"></div>`;
+
+        // Wenn die Gruppe eine ungerade Anzahl an Seiten belegt hat,
+        // eine Leerseite einfügen damit der nächste Grad auf einer rechten Seite beginnt
+        let pagesAfter = $(book).turn('pages') || $(book).children().length;
+        let addedPages = pagesAfter - currentPages;
+        if (addedPages % 2 !== 0) {
+            addSinglePage('');
         }
-        pageContent1 += `</div>`;
-        for (let j = i + spellsPerPage; j < i + 2*spellsPerPage && j < spellList.length; j++) {
-            let spell = spellList[j];
-            pageContent2 += writeSpellCard(spell, j);
-        }
-        pageContent2 += `</div>`;
-        addPages(pageContent1, pageContent2);
+    }
+}
+
+function goToGrad(stufe) {
+    let page = gradPageMap[stufe];
+    if (page !== undefined) {
+        goToPage(page);
     }
 }
 
