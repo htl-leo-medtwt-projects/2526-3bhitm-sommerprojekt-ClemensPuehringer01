@@ -472,6 +472,7 @@ function openSpellAddOverlay(){
     </div>
 
     <button type="button" onclick="sendZauber()">Speichern</button>
+    <button type="button" onclick="closeZauberOverlay()">Abbrechen</button>
 
 </form>
 </div>

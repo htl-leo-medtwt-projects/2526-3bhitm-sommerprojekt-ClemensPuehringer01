@@ -517,22 +517,24 @@ input[type="search"] {
     padding: 1%;
 }
 .spellCardLables{
-    display: grid;
-    grid-template-columns: auto;
-    grid-gap: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 8px;
 }
 .spellLable{
     display: flex;
     justify-content: center;
     align-items: center;
     color: #FDF4C8;
-    width: 70%;
+    width: 100%;
     background-color: #685B40;
     border-radius: 30px;
     text-align: center;
-    max-height: 40%;
-    margin-top: auto;
-    margin-bottom: auto;
+    padding: 1%;
+    box-sizing: border-box;
+    margin: 0;
 }
 #homeBtn{
     display: flex;
