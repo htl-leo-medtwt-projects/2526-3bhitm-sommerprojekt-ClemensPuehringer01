@@ -859,3 +859,242 @@ input[type="search"] {
     color: #BE2B2B;
     transform: translateX(5px);
 }
+/*-------------Zauber Detail Overlay--------------*/
+#spellDetailOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#spellDetailCard {
+    position: relative;
+    background: #FDF4C8;
+    background-image:
+        radial-gradient(ellipse at top left, rgba(187,178,133,0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(187,178,133,0.5) 0%, transparent 60%);
+    width: 38%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 4px;
+    border: 2px solid rgba(119, 83, 32, 0.6);
+    box-shadow:
+        0 0 0 6px rgba(104, 91, 64, 0.25),
+        0 10px 40px rgba(0,0,0,0.5),
+        inset 0 0 30px rgba(187,178,133,0.2);
+    padding: 28px 32px 28px 32px;
+    font-family: elenora, sans-serif;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(119,83,32,0.4) transparent;
+}
+
+#spellDetailCard::-webkit-scrollbar {
+    width: 5px;
+}
+#spellDetailCard::-webkit-scrollbar-thumb {
+    background: rgba(119,83,32,0.4);
+    border-radius: 10px;
+}
+
+/* Roter Strich oben und unten wie im echten Buch */
+#spellDetailCard::before,
+#spellDetailCard::after {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #BE2B2B 15%, #BE2B2B 85%, transparent);
+    margin: 0 -32px;
+}
+#spellDetailCard::before {
+    margin-bottom: 14px;
+}
+#spellDetailCard::after {
+    margin-top: 14px;
+}
+
+#spellDetailName {
+    font-size: 1.9em;
+    color: #1a1a1a;
+    margin: 0 0 2px 0;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+}
+
+#spellDetailSubtitle {
+    font-style: italic;
+    font-size: 0.95em;
+    color: #444;
+    margin-bottom: 12px;
+}
+
+.spellDetailDivider {
+    height: 2px;
+    background: linear-gradient(90deg, #BE2B2B 0%, rgba(190,43,43,0.3) 100%);
+    margin: 10px 0;
+    border: none;
+}
+
+.spellDetailRow {
+    font-size: 0.95em;
+    margin: 5px 0;
+    color: #1a1a1a;
+    line-height: 1.4;
+}
+
+.spellDetailRow strong {
+    color: #1a1a1a;
+}
+
+#spellDetailDescription {
+    font-size: 0.95em;
+    color: #222;
+    line-height: 1.65;
+    margin-top: 12px;
+    text-align: justify;
+}
+
+#spellDetailAtHigher {
+    font-style: italic;
+    font-size: 0.95em;
+    color: #222;
+    margin-top: 12px;
+    line-height: 1.6;
+    border-top: 1px solid rgba(119,83,32,0.3);
+    padding-top: 10px;
+}
+
+#spellDetailAtHigher strong {
+    font-style: normal;
+}
+
+#spellDetailTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+}
+
+.spellDetailTag {
+    background: #685B40;
+    color: #FDF4C8;
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.78em;
+}
+.spellDetailTag.verified {
+    background: #BE2B2B;
+}
+
+#closeSpellDetailBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    background: #BE2B2B;
+    color: white;
+    border: 2px solid rgba(0,0,0,0.3);
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+#closeSpellDetailBtn:hover {
+    background: #2f2f2f;
+}
+
+#spellDetailSchoolImg {
+    float: right;
+    width: 48px;
+    height: 48px;
+    margin-left: 12px;
+    margin-bottom: 4px;
+    opacity: 0.75;
+}
+
+#spellDetailNavSection {
+    margin-top: 16px;
+    border-top: 1px solid rgba(119, 83, 32, 0.3);
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.spellDetailNavLabel {
+    font-size: 0.8em;
+    color: #685B40;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+#spellDetailSchulBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--cover_Gradient);
+    border: 2px solid rgba(119, 83, 32, 0.6);
+    border-radius: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: elenora, sans-serif;
+    font-size: 1em;
+    color: #FDF4C8;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#spellDetailSchulBtn:hover {
+    border-color: #BE2B2B;
+    background: linear-gradient(90deg, #BE2B2B 0%, #8a1a1a 50%, #BE2B2B 100%);
+}
+
+#spellDetailSchulBtn img {
+    width: 28px;
+    height: 28px;
+}
+
+#spellDetailKlassenBtns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.spellDetailKlasseBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cover_Gradient);
+    border: 2px solid rgba(119, 83, 32, 0.6);
+    border-radius: 10px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: elenora, sans-serif;
+    font-size: 0.85em;
+    color: #FDF4C8;
+}
+
+.spellDetailKlasseBtn:hover {
+    border-color: #BE2B2B;
+    background: linear-gradient(90deg, #BE2B2B 0%, #8a1a1a 50%, #BE2B2B 100%);
+}
+
+.spellDetailKlasseBtn img {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    object-fit: cover;
+}

@@ -23,6 +23,9 @@ let currentSpell = null;
 let spellList = [];
 let spellsPerPage = 4;
 
+let currentView = null; 
+let currentViewId = null;
+
 function backCoverRandomizer(){
     randomImg = Math.floor(Math.random() * 6)+1;
 }
@@ -69,13 +72,16 @@ function sortSpellListByLevel() {
 
 //------------------Startseite------------------//
 //----------------------------------------------//
-//Startseite^
+//Startseite
 function backToStartPage() {
     document.getElementById("classHomeBtn").style.display = "none";
+    currentView = null;
+    currentViewId = null;
     currentClassId = null;
     showStartPage();
-    goToPage(4)
+    goToPage(4);
 }
+
 showStartPage();
 function showStartPage() {
     backCoverRandomizer();
@@ -108,28 +114,28 @@ function showStartPage() {
         <div id="zauberSchulen">
             <h2 id="schulenHeader">Zauberschulen</h2>
             <div id="schulenContainer"> 
-            <div class="zauberSchule" id="Bannmagie" onclick="showBannmagie()">
+            <div class="zauberSchule" id="Bannmagie" onclick="showSchoolDynamic(1)">
             <img src="./media/img/schulen/bannmagie.png" alt="">.................................................................................Bannmagie
             </div>
-            <div class="zauberSchule" id="Beschwoerung" onclick="showBeschwoerung()">
+            <div class="zauberSchule" id="Beschwoerung" onclick="showSchoolDynamic(2)">
             <img src="./media/img/schulen/beschwoerung.png" alt="">............................................................................Beschwörung
             </div>
-            <div class="zauberSchule" id="Erkentnismagie" onclick="showErkenntnismagie()">
+            <div class="zauberSchule" id="Erkentnismagie" onclick="showSchoolDynamic(3)">
             <img src="./media/img/schulen/erkenntniss.png" alt="">.........................................................................Erkenntnismagie
             </div>
-            <div class="zauberSchule" id="Hervorrufung" onclick="showHervorrufung()">
+            <div class="zauberSchule" id="Hervorrufung" onclick="showSchoolDynamic(4)">
             <img src="./media/img/schulen/hervorrufung.png" alt="">...........................................................................Hervorrufung
             </div>
-            <div class="zauberSchule" id="Illusionsmagie" onclick="showIllusionsmagie()">
+            <div class="zauberSchule" id="Illusionsmagie" onclick="showSchoolDynamic(5)">
             <img src="./media/img/schulen/illusion.png" alt="">.............................................................................Illusionsmagie
             </div>
-            <div class="zauberSchule" id="Nekromantie" onclick="showNekromantie()">
+            <div class="zauberSchule" id="Nekromantie" onclick="showSchoolDynamic(6)">
             <img src="./media/img/schulen/nekromantie.png" alt="">.............................................................................Nekromantie
             </div>
-            <div class="zauberSchule" id="Verwandlung" onclick="showVerwandlung()">
+            <div class="zauberSchule" id="Verwandlung" onclick="showSchoolDynamic(7)">
             <img src="./media/img/schulen/verwandlung.png" alt="">.............................................................................Verwandlung
             </div>
-            <div class="zauberSchule" id="Verzauberung" onclick="showVerzauberung()">
+            <div class="zauberSchule" id="Verzauberung" onclick="showSchoolDynamic(8)">
             <img src="./media/img/schulen/verzauberung.png" alt="">...........................................................................Verzauberung
             </div>
             </div>
@@ -205,6 +211,9 @@ function showStartPage() {
 
 //------------------Klassenfunktionen------------------//
 async function showClassDynamic(classId) {
+    currentView = "class";
+    currentViewId = classId;
+
     const { name, image, text } = classData[classId];
     
     let answer = await getSpellsByClass(classId);
@@ -238,6 +247,11 @@ async function showClassDynamic(classId) {
 
 // Seite 3 ist die Klassenbeschreibung (erste rechte Seite nach den Hardcovern)
 function goToClassHome() {
+    if (currentView === "class") {
+        showClassDynamic(currentViewId);
+    } else if (currentView === "school") {
+        showSchoolDynamic(currentViewId);
+    }
     goToPage(4);
 }
 
@@ -299,6 +313,55 @@ function drawSpellCards() {
             addSinglePage('');
         }
     }
+}
+//------------------Schulenfunktionen------------------//
+async function showSchoolDynamic(schulenId) {
+    currentView = "school";
+    currentViewId = schulenId;
+
+    let schulenNamen = [];
+    schulenNamen[1] = "Bannmagie";
+    schulenNamen[2] = "Beschwörung";
+    schulenNamen[3] = "Erkenntnismagie";
+    schulenNamen[4] = "Verzauberung";
+    schulenNamen[5] = "Hervorrufung";
+    schulenNamen[6] = "Illusionsmagie";
+    schulenNamen[7] = "Nekromantie";
+    schulenNamen[8] = "Verwandlung";
+
+    let schulenBilder = [];
+    schulenBilder[1] = "bannmagie.png";
+    schulenBilder[2] = "beschwoerung.png";
+    schulenBilder[3] = "erkenntniss.png";
+    schulenBilder[4] = "verzauberung.png";
+    schulenBilder[5] = "hervorrufung.png";
+    schulenBilder[6] = "illusion.png";
+    schulenBilder[7] = "nekromantie.png";
+    schulenBilder[8] = "verwandlung.png";
+
+    let name = schulenNamen[schulenId];
+    let bild = schulenBilder[schulenId];
+
+    let answer = await getSpellsBySchool(schulenId);
+    spellList = answer.data;
+    backCoverRandomizer();
+    resetBook(randomImg);
+
+    document.getElementById("classHomeBtn").style.display = "block";
+
+    let headerHtml = "<div id='classDescription'>";
+    headerHtml += "<div id='classHeader'>";
+    headerHtml += "<img src='./media/img/schulen/" + bild + "' alt=''>";
+    headerHtml += "<h1>" + name + "</h1>";
+    headerHtml += "</div></div>";
+
+    let levelTable = loadSpellLevelTable();
+
+    addPages("", headerHtml);
+    addSinglePage(levelTable);
+    drawSpellCards();
+    fillPages();
+    goToPage(4);
 }
 
 function goToGrad(stufe) {
@@ -632,6 +695,358 @@ function closeError() {
 function closeZauberOverlay(){
     let overlay = document.getElementById("zauberOverlay");
     if(overlay){
+        overlay.remove();
+    }
+}
+function showSpellDetails(index) {
+    let spell = spellList[index];
+    if (!spell) {
+        return;
+    }
+
+    // Schulenbild ermitteln
+    let schulenBild = "";
+    if (spell.schulenName === "Bannmagie") {
+        schulenBild = "bannmagie.png";
+    } else if (spell.schulenName === "Beschwörung") {
+        schulenBild = "beschwoerung.png";
+    } else if (spell.schulenName === "Erkenntnismagie") {
+        schulenBild = "erkenntniss.png";
+    } else if (spell.schulenName === "Hervorrufung") {
+        schulenBild = "hervorrufung.png";
+    } else if (spell.schulenName === "Illusionsmagie") {
+        schulenBild = "illusion.png";
+    } else if (spell.schulenName === "Nekromantie") {
+        schulenBild = "nekromantie.png";
+    } else if (spell.schulenName === "Verwandlung") {
+        schulenBild = "verwandlung.png";
+    } else if (spell.schulenName === "Verzauberung") {
+        schulenBild = "verzauberung.png";
+    }
+
+    // Schul-ID ermitteln
+    let schulenId = 0;
+    if (spell.schulenName === "Bannmagie") {
+        schulenId = 1;
+    } else if (spell.schulenName === "Beschwörung") {
+        schulenId = 2;
+    } else if (spell.schulenName === "Erkenntnismagie") {
+        schulenId = 3;
+    } else if (spell.schulenName === "Verzauberung") {
+        schulenId = 4;
+    } else if (spell.schulenName === "Hervorrufung") {
+        schulenId = 5;
+    } else if (spell.schulenName === "Illusionsmagie") {
+        schulenId = 6;
+    } else if (spell.schulenName === "Nekromantie") {
+        schulenId = 7;
+    } else if (spell.schulenName === "Verwandlung") {
+        schulenId = 8;
+    }
+
+    // Klassennamen ermitteln
+    let klassenNamen = [];
+    if (Array.isArray(spell.klassen) && spell.klassen.length > 0) {
+        klassenNamen = spell.klassen;
+    } else if (typeof spell.klassen === "string" && spell.klassen !== "") {
+        klassenNamen = spell.klassen.split(", ");
+    }
+
+    let klassenIds = [];
+    if (Array.isArray(spell.klassenIds)) {
+        klassenIds = spell.klassenIds;
+    }
+
+    // Klassen-Bilddaten
+    let klassenBildMap = [];
+    klassenBildMap["Barde"]        = "barde.jpeg";
+    klassenBildMap["Druide"]       = "druide.jpeg";
+    klassenBildMap["Hexenmeister"] = "hexenmeister.jpeg";
+    klassenBildMap["Kleriker"]     = "kleriker.jpeg";
+    klassenBildMap["Magier"]       = "magier.jpeg";
+    klassenBildMap["Paladin"]      = "paladin.jpeg";
+    klassenBildMap["Waldläufer"]   = "waldlaeufer.jpeg";
+    klassenBildMap["Zauberer"]     = "zauberer.jpeg";
+
+    let klassenIdMap = [];
+    klassenIdMap["Barde"]        = 1;
+    klassenIdMap["Druide"]       = 2;
+    klassenIdMap["Hexenmeister"] = 3;
+    klassenIdMap["Kleriker"]     = 4;
+    klassenIdMap["Magier"]       = 5;
+    klassenIdMap["Paladin"]      = 6;
+    klassenIdMap["Waldläufer"]   = 7;
+    klassenIdMap["Zauberer"]     = 8;
+
+    // Grad-Bezeichnung
+    let gradText = "";
+    if (spell.stufe === 0) {
+        gradText = "Zaubertrick, Schule der " + spell.schulenName;
+    } else {
+        gradText = spell.schulenName + " des " + spell.stufe + ". Grades";
+    }
+
+    // Reichweite
+    let reichweiteText = "";
+    if (spell.reichweite === -1) {
+        reichweiteText = "Selbst";
+    } else if (spell.reichweite === 0) {
+        reichweiteText = "Berührung";
+    } else {
+        reichweiteText = spell.reichweite + " m";
+    }
+
+    // Komponenten
+    let komps = [];
+    if (spell.verbalKomp) {
+        komps.push("V");
+    }
+    if (spell.gestKomp) {
+        komps.push("G");
+    }
+    if (spell.materKomp) {
+        if (spell.materKompDet) {
+            komps.push("M (" + spell.materKompDet + ")");
+        } else {
+            komps.push("M");
+        }
+    }
+
+    let kompText = "";
+    if (komps.length === 0) {
+        kompText = "–";
+    } else {
+        for (let i = 0; i < komps.length; i++) {
+            if (i > 0) {
+                kompText += ", ";
+            }
+            kompText += komps[i];
+        }
+    }
+
+    // Zeitaufwand
+    let zeitText = spell.zeitaufwand + " " + spell.zeiteinheit;
+    if (spell.zeiteinheit === "aktion") {
+        zeitText = spell.zeitaufwand + " Aktion";
+    }
+    if (spell.zeiteinheit === "bonusaktion") {
+        zeitText = spell.zeitaufwand + " Bonusaktion";
+    }
+    if (spell.zeiteinheit === "reaktion") {
+        zeitText = "Reaktion";
+    }
+    if (spell.zeiteinheit === "runde") {
+        zeitText = spell.zeitaufwand + " Runde(n)";
+    }
+    if (spell.zeiteinheit === "minute") {
+        zeitText = spell.zeitaufwand + " Minute(n)";
+    }
+    if (spell.zeiteinheit === "stunde") {
+        zeitText = spell.zeitaufwand + " Stunde(n)";
+    }
+
+    // Wirkungsdauer
+    let dauerText = "";
+    if (spell.wirkungsdauerEinheit === "unmittelbar") {
+        dauerText = "Unmittelbar";
+    } else if (spell.wirkungsdauerEinheit === "permanent") {
+        dauerText = "Permanent";
+    } else if (spell.wirkungsdauerEinheit === "runde") {
+        dauerText = spell.wirkungsdauer + " Runde(n)";
+    } else if (spell.wirkungsdauerEinheit === "minute") {
+        dauerText = spell.wirkungsdauer + " Minute(n)";
+    } else if (spell.wirkungsdauerEinheit === "stunde") {
+        dauerText = spell.wirkungsdauer + " Stunde(n)";
+    } else if (spell.wirkungsdauerEinheit === "tag") {
+        dauerText = spell.wirkungsdauer + " Tag(e)";
+    } else {
+        dauerText = spell.wirkungsdauer + " " + spell.wirkungsdauerEinheit;
+    }
+
+    // Overlay erstellen
+    let overlay = document.createElement("div");
+    overlay.id = "spellDetailOverlay";
+    overlay.onclick = function(event) {
+        if (event.target === overlay) {
+            closeSpellDetail();
+        }
+    };
+
+    let card = document.createElement("div");
+    card.id = "spellDetailCard";
+
+    // Schließen-Button
+    let closeBtn = document.createElement("button");
+    closeBtn.id = "closeSpellDetailBtn";
+    closeBtn.innerHTML = "✕";
+    closeBtn.onclick = closeSpellDetail;
+    card.appendChild(closeBtn);
+
+    // Schulen-Bild
+    if (schulenBild !== "") {
+        let schoolImg = document.createElement("img");
+        schoolImg.id = "spellDetailSchoolImg";
+        schoolImg.src = "./media/img/schulen/" + schulenBild;
+        schoolImg.alt = spell.schulenName;
+        card.appendChild(schoolImg);
+    }
+
+    // Name
+    let nameEl = document.createElement("h2");
+    nameEl.id = "spellDetailName";
+    nameEl.innerHTML = spell.zauberName;
+    card.appendChild(nameEl);
+
+    // Untertitel
+    let subtitle = document.createElement("div");
+    subtitle.id = "spellDetailSubtitle";
+    subtitle.innerHTML = gradText;
+    card.appendChild(subtitle);
+
+    // Trennlinie
+    let hr1 = document.createElement("hr");
+    hr1.className = "spellDetailDivider";
+    card.appendChild(hr1);
+
+    // Felder aufbauen
+    let felder = [];
+    felder.push({ label: "Zeitaufwand",   wert: zeitText });
+    felder.push({ label: "Reichweite",    wert: reichweiteText });
+    felder.push({ label: "Komponenten",   wert: kompText });
+    felder.push({ label: "Wirkungsdauer", wert: dauerText });
+
+    if (spell.avgDmg !== null && spell.avgDmg !== undefined) {
+        felder.push({ label: "Ø Schaden", wert: spell.avgDmg });
+    }
+
+    for (let i = 0; i < felder.length; i++) {
+        let row = document.createElement("div");
+        row.className = "spellDetailRow";
+        row.innerHTML = "<strong>" + felder[i].label + ":</strong> " + felder[i].wert;
+        card.appendChild(row);
+    }
+
+    // Trennlinie
+    let hr2 = document.createElement("hr");
+    hr2.className = "spellDetailDivider";
+    card.appendChild(hr2);
+
+    // Beschreibung
+    let desc = document.createElement("div");
+    desc.id = "spellDetailDescription";
+    desc.innerHTML = spell.beschreibung;
+    card.appendChild(desc);
+
+    // Tags
+    let tagsDiv = document.createElement("div");
+    tagsDiv.id = "spellDetailTags";
+
+    let verified = spell.userId == 1;
+    let selfMade = userInfo.loggedIn && spell.userId == userInfo.userID;
+
+    if (verified) {
+        let tagV = document.createElement("span");
+        tagV.className = "spellDetailTag verified";
+        tagV.innerHTML = "✓ Verifiziert";
+        tagsDiv.appendChild(tagV);
+    }
+    if (selfMade) {
+        let tagS = document.createElement("span");
+        tagS.className = "spellDetailTag";
+        tagS.innerHTML = "Eigenkreation";
+        tagsDiv.appendChild(tagS);
+    }
+    if (spell.regelbuchName) {
+        let tagR = document.createElement("span");
+        tagR.className = "spellDetailTag";
+        tagR.innerHTML = spell.regelbuchName;
+        tagsDiv.appendChild(tagR);
+    }
+    card.appendChild(tagsDiv);
+
+    // Navigations-Bereich
+    let navSection = document.createElement("div");
+    navSection.id = "spellDetailNavSection";
+
+    // Schul-Button
+    let schulLabel = document.createElement("div");
+    schulLabel.className = "spellDetailNavLabel";
+    schulLabel.innerHTML = "Zur Zauberschule";
+    navSection.appendChild(schulLabel);
+
+    let schulBtn = document.createElement("button");
+    schulBtn.id = "spellDetailSchulBtn";
+
+    if (schulenBild !== "") {
+        let schulImg = document.createElement("img");
+        schulImg.src = "./media/img/schulen/" + schulenBild;
+        schulImg.alt = spell.schulenName;
+        schulBtn.appendChild(schulImg);
+    }
+
+    let schulName = document.createElement("span");
+    schulName.innerHTML = "Schule der " + spell.schulenName;
+    schulBtn.appendChild(schulName);
+
+    (function(sid) {
+        schulBtn.onclick = function() {
+            closeSpellDetail();
+            showSchoolDynamic(sid);
+        };
+    })(schulenId);
+
+    navSection.appendChild(schulBtn);
+
+    // Klassen-Buttons
+    if (klassenNamen.length > 0) {
+        let klassenLabel = document.createElement("div");
+        klassenLabel.className = "spellDetailNavLabel";
+        klassenLabel.innerHTML = "Zu den Klassen";
+        navSection.appendChild(klassenLabel);
+
+        let klassenBtnsDiv = document.createElement("div");
+        klassenBtnsDiv.id = "spellDetailKlassenBtns";
+
+        for (let k = 0; k < klassenNamen.length; k++) {
+            let kName = klassenNamen[k];
+            let kId = klassenIdMap[kName];
+            let kBild = klassenBildMap[kName];
+
+            let kBtn = document.createElement("button");
+            kBtn.className = "spellDetailKlasseBtn";
+
+            if (kBild) {
+                let kImg = document.createElement("img");
+                kImg.src = "./media/img/klassen/" + kBild;
+                kImg.alt = kName;
+                kBtn.appendChild(kImg);
+            }
+
+            let kSpan = document.createElement("span");
+            kSpan.innerHTML = kName;
+            kBtn.appendChild(kSpan);
+
+            (function(id) {
+                kBtn.onclick = function() {
+                    closeSpellDetail();
+                    showClassDynamic(id);
+                };
+            })(kId);
+
+            klassenBtnsDiv.appendChild(kBtn);
+        }
+
+        navSection.appendChild(klassenBtnsDiv);
+    }
+
+    card.appendChild(navSection);
+    overlay.appendChild(card);
+    wrapper.appendChild(overlay);
+}
+
+function closeSpellDetail() {
+    let overlay = document.getElementById("spellDetailOverlay");
+    if (overlay) {
         overlay.remove();
     }
 }
