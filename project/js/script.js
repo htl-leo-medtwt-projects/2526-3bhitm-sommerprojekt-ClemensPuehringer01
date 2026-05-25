@@ -19,6 +19,17 @@ const classData = {
     8: { name: "Zauberer",     image: "zauberer"     , text: zaubererInfoTxt},
 };
 
+const schoolData = {
+    1: { name: "Bannmagie", image: "bannmagie.png", text: bannmagieInfoTxt},
+    2: { name: "Beschwörung", image: "beschwoerung.png", text: beschwoerungInfoTxt},
+    3: { name: "Erkenntnismagie", image: "erkenntniss.png", text: erkenntnismagieInfoTxt},
+    4: { name: "Verzauberung", image: "verzauberung.png", text: verzauberungInfoTxt},
+    5: { name: "Hervorrufung", image: "hervorrufung.png", text: hervorrufungInfoTxt},
+    6: { name: "Illusionsmagie", image: "illusion.png", text: illusionInfoTxt},
+    7: { name: "Nekromantie", image: "nekromantie.png", text: nekromantieInfoTxt},
+    8: { name: "Verwandlung", image: "verwandlung.png", text: verwandlungInfoTxt},
+};
+
 let currentSpell = null;
 let spellList = [];
 let spellsPerPage = 4;
@@ -104,7 +115,7 @@ function showStartPage() {
         <div id="searchBar">
             <h2 id="searchHeader">Was möchtest du lernen?</h2>
             <div id="searchContainer">
-            <form id="searchform" onsubmit="event.preventDefault();" role="search">
+            <form id="searchform" role="search">
             <label for="search">Search for stuff</label>
             <input id="search" type="search" placeholder="Search..." autofocus required />
             <button id="searchBtn" type="submit">Find</button>    
@@ -123,21 +134,22 @@ function showStartPage() {
             <div class="zauberSchule" id="Erkentnismagie" onclick="showSchoolDynamic(3)">
             <img src="./media/img/schulen/erkenntniss.png" alt="">.........................................................................Erkenntnismagie
             </div>
-            <div class="zauberSchule" id="Hervorrufung" onclick="showSchoolDynamic(4)">
-            <img src="./media/img/schulen/hervorrufung.png" alt="">...........................................................................Hervorrufung
-            </div>
-            <div class="zauberSchule" id="Illusionsmagie" onclick="showSchoolDynamic(5)">
-            <img src="./media/img/schulen/illusion.png" alt="">.............................................................................Illusionsmagie
-            </div>
-            <div class="zauberSchule" id="Nekromantie" onclick="showSchoolDynamic(6)">
-            <img src="./media/img/schulen/nekromantie.png" alt="">.............................................................................Nekromantie
-            </div>
-            <div class="zauberSchule" id="Verwandlung" onclick="showSchoolDynamic(7)">
-            <img src="./media/img/schulen/verwandlung.png" alt="">.............................................................................Verwandlung
-            </div>
-            <div class="zauberSchule" id="Verzauberung" onclick="showSchoolDynamic(8)">
+            <div class="zauberSchule" id="Verzauberung" onclick="showSchoolDynamic(4)">
             <img src="./media/img/schulen/verzauberung.png" alt="">...........................................................................Verzauberung
             </div>
+            <div class="zauberSchule" id="Hervorrufung" onclick="showSchoolDynamic(5)">
+            <img src="./media/img/schulen/hervorrufung.png" alt="">...........................................................................Hervorrufung
+            </div>
+            <div class="zauberSchule" id="Illusionsmagie" onclick="showSchoolDynamic(6)">
+            <img src="./media/img/schulen/illusion.png" alt="">.............................................................................Illusionsmagie
+            </div>
+            <div class="zauberSchule" id="Nekromantie" onclick="showSchoolDynamic(7)">
+            <img src="./media/img/schulen/nekromantie.png" alt="">.............................................................................Nekromantie
+            </div>
+            <div class="zauberSchule" id="Verwandlung" onclick="showSchoolDynamic(8)">
+            <img src="./media/img/schulen/verwandlung.png" alt="">.............................................................................Verwandlung
+            </div>
+
             </div>
         </div>
         <div id="klassen">
@@ -207,6 +219,17 @@ function showStartPage() {
     `
     addPages('', content1);
     addPages(content2, '');
+
+    setTimeout(() => {
+    const form = document.getElementById("searchform");
+    const input = document.getElementById("search");
+    if (form && input) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            handleSearch(input.value);
+        });
+    }
+}, 100);
 }
 
 //------------------Klassenfunktionen------------------//
@@ -257,9 +280,8 @@ function goToClassHome() {
 
 function drawSpellCards() {
     sortSpellListByLevel();
-    gradPageMap = {}; // zurücksetzen
+    gradPageMap = {};
 
-    // Zauber nach Stufe gruppieren
     let groups = {};
     for (let spell of spellList) {
         if (!groups[spell.stufe]) groups[spell.stufe] = [];
@@ -270,24 +292,58 @@ function drawSpellCards() {
 
     for (let stufe of sortedLevels) {
         let spells = groups[stufe];
+        let gradLabel = stufe === 0 ? "Zaubertrick" : `Grad ${stufe}`;
 
-        // Aktuelle Seitenzahl VOR dem Hinzufügen dieser Gruppe merken
-        // +1 weil addPages die nächste freie Seite belegt
-        // Die Endcover (2 Seiten) abziehen, dann ist das die erste neue Seite
+        let gradTitleContent = `
+            <div style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+                gap: 0.5em;
+            ">
+                <div style="
+                    font-size: 3em;
+                    color: #685B40;
+                    border-bottom: 3px solid rgba(119, 83, 32, 0.973);
+                    padding-bottom: 0.3em;
+                    width: 80%;
+                    text-align: center;
+                ">${gradLabel}</div>
+                <div style="font-size: 1.3em; color: #2f2f2f;">
+                    ${spells.length} Zauber
+                </div>
+            </div>
+        `;
+
         let currentPages = $(book).turn('pages') || $(book).children().length;
-        gradPageMap[stufe] = currentPages - 1; // -1 weil vor den Endcovern eingefügt wird
+        gradPageMap[stufe] = currentPages - 1;
 
-        // Seiten paarweise befüllen
-        for (let i = 0; i < spells.length; i += 2 * spellsPerPage) {
+        // Erste Doppelseite: links = Gradtitel, rechts = erste Zauberkarten
+        let firstRightPage = `<div class="spellCardContainer">`;
+        for (let j = 0; j < spellsPerPage && j < spells.length; j++) {
+            firstRightPage += writeSpellCard(spells[j], spellList.indexOf(spells[j]));
+        }
+        let filled1 = Math.min(spellsPerPage, spells.length);
+        for (let k = 0; k < spellsPerPage - filled1; k++) {
+            firstRightPage += `<div class="emptyCard"></div>`;
+        }
+        firstRightPage += `</div>`;
+
+        addPages(gradTitleContent, firstRightPage);
+
+        // Restliche Zauber paarweise
+        for (let i = spellsPerPage; i < spells.length; i += 2 * spellsPerPage) {
             let pageContent1 = `<div class="spellCardContainer">`;
             let pageContent2 = `<div class="spellCardContainer">`;
 
             for (let j = i; j < i + spellsPerPage && j < spells.length; j++) {
                 pageContent1 += writeSpellCard(spells[j], spellList.indexOf(spells[j]));
             }
-            // Leere Karten auffüllen
-            let filled1 = Math.min(spellsPerPage, spells.length - i);
-            for (let k = 0; k < spellsPerPage - filled1; k++) {
+            let filledA = Math.min(spellsPerPage, spells.length - i);
+            for (let k = 0; k < spellsPerPage - filledA; k++) {
                 pageContent1 += `<div class="emptyCard"></div>`;
             }
             pageContent1 += `</div>`;
@@ -295,9 +351,8 @@ function drawSpellCards() {
             for (let j = i + spellsPerPage; j < i + 2 * spellsPerPage && j < spells.length; j++) {
                 pageContent2 += writeSpellCard(spells[j], spellList.indexOf(spells[j]));
             }
-            // Leere Karten auffüllen (rechte Seite)
-            let filled2 = Math.max(0, Math.min(spellsPerPage, spells.length - (i + spellsPerPage)));
-            for (let k = 0; k < spellsPerPage - filled2; k++) {
+            let filledB = Math.max(0, Math.min(spellsPerPage, spells.length - (i + spellsPerPage)));
+            for (let k = 0; k < spellsPerPage - filledB; k++) {
                 pageContent2 += `<div class="emptyCard"></div>`;
             }
             pageContent2 += `</div>`;
@@ -305,8 +360,7 @@ function drawSpellCards() {
             addPages(pageContent1, pageContent2);
         }
 
-        // Wenn die Gruppe eine ungerade Anzahl an Seiten belegt hat,
-        // eine Leerseite einfügen damit der nächste Grad auf einer rechten Seite beginnt
+        // Ungerade Seitenanzahl → Leerseite damit nächster Grad rechts beginnt
         let pagesAfter = $(book).turn('pages') || $(book).children().length;
         let addedPages = pagesAfter - currentPages;
         if (addedPages % 2 !== 0) {
@@ -319,28 +373,8 @@ async function showSchoolDynamic(schulenId) {
     currentView = "school";
     currentViewId = schulenId;
 
-    let schulenNamen = [];
-    schulenNamen[1] = "Bannmagie";
-    schulenNamen[2] = "Beschwörung";
-    schulenNamen[3] = "Erkenntnismagie";
-    schulenNamen[4] = "Verzauberung";
-    schulenNamen[5] = "Hervorrufung";
-    schulenNamen[6] = "Illusionsmagie";
-    schulenNamen[7] = "Nekromantie";
-    schulenNamen[8] = "Verwandlung";
-
-    let schulenBilder = [];
-    schulenBilder[1] = "bannmagie.png";
-    schulenBilder[2] = "beschwoerung.png";
-    schulenBilder[3] = "erkenntniss.png";
-    schulenBilder[4] = "verzauberung.png";
-    schulenBilder[5] = "hervorrufung.png";
-    schulenBilder[6] = "illusion.png";
-    schulenBilder[7] = "nekromantie.png";
-    schulenBilder[8] = "verwandlung.png";
-
-    let name = schulenNamen[schulenId];
-    let bild = schulenBilder[schulenId];
+    let name = schoolData[schulenId].name;
+    let bild = schoolData[schulenId].image;
 
     let answer = await getSpellsBySchool(schulenId);
     spellList = answer.data;
@@ -353,6 +387,7 @@ async function showSchoolDynamic(schulenId) {
     headerHtml += "<div id='classHeader'>";
     headerHtml += "<img src='./media/img/schulen/" + bild + "' alt=''>";
     headerHtml += "<h1>" + name + "</h1>";
+    headerHtml += "</div><div id='classDescriptionText'><p>" + schoolData[schulenId].text + "</p></div>";
     headerHtml += "</div></div>";
 
     let levelTable = loadSpellLevelTable();
@@ -1049,4 +1084,35 @@ function closeSpellDetail() {
     if (overlay) {
         overlay.remove();
     }
+}
+//Suchlogik
+async function handleSearch(query) {
+    if (!query || query.trim().length < 2) return;
+
+    let result = await searchSpells(query.trim());
+    if (!result.success || !result.data.length) {
+        // Buch zurücksetzen und leere Meldung zeigen
+        backCoverRandomizer();
+        resetBook(randomImg);
+        addPages('', '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:1.5em;">Keine Zauber gefunden.</div>');
+        goToPage(4);
+        return;
+    }
+
+    spellList = result.data;
+    backCoverRandomizer();
+    resetBook(randomImg);
+
+    // Titel-Seite links leer, rechts Ergebnisüberschrift
+    let resultHeader = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1em;">
+            <h2 style="font-size:2em;">Suchergebnisse</h2>
+            <p style="font-size:1.3em;">„${query}"</p>
+            <p style="font-size:1.1em;">${spellList.length} Zauber gefunden</p>
+        </div>`;
+    addPages('', resultHeader);
+
+    drawSpellCards();
+    fillPages();
+    goToPage(4);
 }

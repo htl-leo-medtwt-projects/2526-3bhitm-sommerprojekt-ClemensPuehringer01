@@ -76,3 +76,7 @@ async function getSpellsByClass(id) {
 
     return await response.json();
 }
+async function searchSpells(query) {
+    const response = await fetch(`./api/searchSpells.php?q=${encodeURIComponent(query)}`);
+    return await response.json();
+}

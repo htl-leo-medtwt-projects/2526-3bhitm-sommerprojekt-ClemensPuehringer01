@@ -22,3 +22,35 @@ Fernab von Städten und Höfen findet der Waldläufer sein Zuhause. Er ist Jäge
 const zaubererInfoTxt=`
 Anders als der Magier hat der Zauberer seine Kräfte nie erlernt – sie sind ein Teil von ihm, tief verwurzelt in seinem Wesen. Vielleicht fließt das Blut eines Drachen durch seine Adern, vielleicht war er einst von roher Magie berührt. Was auch immer die Quelle ist, seine Macht ist instinktiv, wild und oft unberechenbar. Jeder Zauber ist ein Ausdruck seiner Emotionen, seiner Persönlichkeit – intensiv und manchmal gefährlich. Ein Zauberer muss nicht lernen, Magie zu wirken… er muss lernen, sie zu kontrollieren, bevor sie ihn kontrolliert.
 `
+
+const bannmagieInfoTxt=`
+Die Bannmagie schützt vor den Kräften, die Sterbliche kaum begreifen können. Ihre Zauber errichten unsichtbare Barrieren, brechen Flüche und weisen dunkle Mächte zurück. Wer diese Schule beherrscht, versteht nicht nur, wie Magie wirkt – sondern auch, wie man sie kontrolliert oder zunichtemacht. Bannmagier stehen oft zwischen ihren Gefährten und der Vernichtung, ruhig und standhaft wie eine Mauer aus arkaner Energie. Denn manchmal ist die größte Macht nicht die Zerstörung… sondern der Schutz davor.
+`
+
+const beschwoerungInfoTxt=`
+Die Schule der Beschwörung befasst sich mit dem Überschreiten von Grenzen – zwischen Orten, Ebenen und Welten. Ein Beschwörer ruft Kreaturen herbei, erschafft Gegenstände aus reiner Magie oder öffnet Portale an Orte, die andere niemals erreichen könnten. Für ihn ist Distanz bedeutungslos, denn Raum selbst ist nur ein Hindernis, das überwunden werden kann. Doch jede Beschwörung birgt Risiken. Denn nicht alles, was gerufen wird, kehrt freiwillig wieder zurück.
+`
+
+const erkenntnismagieInfoTxt=`
+Erkenntnismagie offenbart, was verborgen bleiben sollte. Ihre Anwender spähen in die Ferne, lesen Gedanken oder erkennen Wahrheiten hinter Lügen und Illusionen. Für einen Meister dieser Schule ist Wissen die mächtigste Waffe – denn wer alles sieht, kann kaum überrascht werden. Doch mit jedem Geheimnis, das enthüllt wird, wächst auch die Erkenntnis, dass manche Wahrheiten besser verborgen geblieben wären.
+`
+
+const verzauberungInfoTxt=`
+Die Verzauberungsmagie wirkt nicht auf die Welt selbst, sondern auf den Geist jener, die in ihr leben. Mit einem einzigen Wort kann ein Verzauberer Vertrauen erschaffen, Angst säen oder den Willen anderer brechen. Seine Macht ist subtil, oft kaum bemerkbar, und gerade deshalb so gefährlich. Denn nicht jede Schlacht wird mit Schwertern gewonnen – manche beginnen mit einem Flüstern und enden mit völliger Kontrolle.
+`
+
+const hervorrufungInfoTxt=`
+Die Hervorrufungsmagie ist rohe, ungezügelte Macht in ihrer reinsten Form. Feuer, Blitz, Eis und Donner gehorchen dem Willen des Zauberwirkers und verwandeln das Schlachtfeld in ein tobendes Chaos. Wer diese Schule beherrscht, kanalisiert die zerstörerischen Kräfte des Universums selbst und entfesselt sie mit verheerender Präzision. Doch Macht dieser Größe fordert Disziplin – denn ein einziger Fehler kann Freund und Feind gleichermaßen vernichten.
+`
+
+const illusionInfoTxt=`
+Illusionsmagie spielt mit Wahrnehmung und Wahrheit. Ihre Meister erschaffen Bilder, Geräusche und Empfindungen so überzeugend, dass Realität und Täuschung miteinander verschwimmen. Ein Illusionist kämpft selten mit roher Gewalt – er manipuliert die Sinne seiner Gegner, bis diese nicht mehr wissen, was echt ist. Doch die gefährlichsten Illusionen sind oft jene, die Menschen glauben wollen.
+`
+
+const nekromantieInfoTxt=`
+Die Nekromantie beschäftigt sich mit Leben, Tod und der schmalen Grenze dazwischen. Ihre Zauber können Lebensenergie rauben, die Toten erheben oder den unvermeidlichen Verfall hinauszögern. Viele fürchten diese Schule, denn sie erinnert an Wahrheiten, denen niemand entkommen kann. Doch für einen Nekromanten ist der Tod kein Ende, sondern lediglich ein weiterer Zustand der Existenz – formbar wie alles andere.
+`
+
+const verwandlungInfoTxt=`
+Die Schule der Verwandlung lehrt, dass nichts in der Welt wirklich festgelegt ist. Stein kann zu Schlamm werden, Menschen zu Tieren und Schwäche zu Stärke. Transmutatoren verändern Materie, Körper und sogar die Gesetze der Natur nach ihrem Willen. Ihre Magie ist wandelbar und kreativ, voller Möglichkeiten und Gefahren zugleich. Denn wer die Welt verändern kann… verändert oft auch sich selbst.
+`
