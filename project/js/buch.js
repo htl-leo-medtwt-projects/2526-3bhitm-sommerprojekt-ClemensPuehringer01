@@ -27,8 +27,7 @@ function addPages(content1, content2) {
     let backCoverIndex = totalPages;
     let priorCoverIndex = totalPages - 1;
 
-    // Vor dem Endcover einfügen, indem wir die aktuelle Endcover-Position verwenden.
-    // Dies sollte in turn.js automatisch die Seite an die richtige Stelle schieben.
+    // Vor dem Endcover einfügen.
     $(book).turn('addPage', `<div>${content1}</div>`, priorCoverIndex);
     $(book).turn('addPage', `<div>${content2}</div>`, backCoverIndex);
 

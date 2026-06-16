@@ -737,7 +737,7 @@ input[type="search"] {
     clip: auto;
     height: auto;
     width: auto;
-    overflow: visible;
+    overflow: hidden;
 }
 
 #reichweiteContainer {
